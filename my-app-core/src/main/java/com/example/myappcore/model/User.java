@@ -26,4 +26,6 @@ public class User {
 
     public String firstname;
 
+    public User(String email, String correctPassword) {
+    }
 }
