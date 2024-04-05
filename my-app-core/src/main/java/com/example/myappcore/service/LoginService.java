@@ -48,4 +48,10 @@ public class LoginService {
         }
         return false;
     }
+
+    @Transactional
+    public boolean registerUser(User user){
+        userRepository.save(user);
+        return true;
+    }
 }

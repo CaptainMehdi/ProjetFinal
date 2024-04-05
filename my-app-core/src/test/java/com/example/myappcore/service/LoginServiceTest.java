@@ -20,6 +20,16 @@ class LoginServiceTest {
     private final UserRepository userRepository = mock(UserRepository.class);
     private final LoginService loginService = new LoginService(userRepository);
 
+    @Test
+    public void testLogin_Successful() {
+        String email = "mehdi@gmail.com";
+        String password = "mehdi";
+
+        UserDto userDto = new UserDto(email, password);
+        UserDetails userDetails = loginService.login(userDto);
+        System.out.println(userDetails);
+        assertEquals(email, userDetails.getEmail());
+    }
 
     @Test
     public void testLogin_InvalidEmail() {
