@@ -1,14 +1,24 @@
 import React, { useState } from "react";
-import { login } from "../api/ApiCalls";
+import { login, setAuthenticated } from "../api/ApiCalls";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useHistory } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const history = useHistory();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     login({ email, password }).then((response) => {
-      console.log("Response: " + response);
+      if (response) {
+        setAuthenticated(true);
+        history.push(`/home/${response.id}`);
+        window.location.reload();
+      } else {
+        toast.error("Bad credential");
+      }
     });
   };
 
@@ -37,7 +47,7 @@ export default function Login() {
               Mot de passe
             </label>
             <input
-              type="mdp"
+              type="password"
               className="form-control"
               id="password"
               value={password}
@@ -53,6 +63,7 @@ export default function Login() {
             <a href="/register">Vous n'avez pas de compte ?</a>
           </div>
         </form>
+        <ToastContainer />
       </div>
     </div>
   );

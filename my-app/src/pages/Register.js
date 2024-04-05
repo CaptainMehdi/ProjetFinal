@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { register } from "../api/ApiCalls";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useHistory } from "react-router-dom";
 
 export default function Register() {
   const [inputFields, setInputFields] = useState({
@@ -12,6 +13,7 @@ export default function Register() {
     lastname: "",
   });
   const [errors, setErrors] = useState({});
+  const history = useHistory();
 
   const validateValues = (inputValues) => {
     let errors = {};
@@ -53,6 +55,7 @@ export default function Register() {
       }).then((data) => {
         console.log(data);
         toast.success("Successfully submitted ✓");
+        history.push("/login");
       });
     }
   };
