@@ -34,4 +34,8 @@ public class ActivitePiscineService {
         dto.setBassin(activitePiscine.getBassin());
         return dto;
     }
+
+    public ActivitePiscine getActivitiesById(Long id){
+        return activitePiscineRepository.getById(id);
+    }
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping("/api/activity")
 @CrossOrigin(origins = "http://localhost:3000")
 public class ActivitePiscineController {
     private ActivitePiscineService activitePiscineService;

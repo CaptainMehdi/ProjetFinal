@@ -77,7 +77,7 @@ export default function Horaire() {
         <div className="accordion-item">
           <h2 className="accordion-header">
             <button
-              className="accordion-button collapsed border my-2"
+              className="accordion-button collapsed rounded border my-2"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#flush-collapseForm"
@@ -89,7 +89,7 @@ export default function Horaire() {
           </h2>
           <div
             id="flush-collapseForm"
-            className="accordion-collapse collapse"
+            className="accordion-collapse collapse bg-light"
             data-bs-parent="#accordionFlushExample"
           >
             <div className="accordion-body">
