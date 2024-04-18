@@ -42,7 +42,6 @@ public class HoraireService {
                 horaireDto.setTo(horaire.getTo());
                 horaireDto.setFrom(horaire.getFrom());
                 horaireDto.setActivitePiscineId(horaire.getActivitePiscine().getId());
-
                 horaireDtos.add(horaireDto);
             }
         }

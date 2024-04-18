@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import ScheduleGrid from "../components/ScheduleGrid";
 import ScheduleForm from "../components/ScheduleForm";
-import { getAllActivities } from "../api/ApiCalls";
+import { getAllActivities, getEnumsValues } from "../api/ApiCalls";
 import Activity from "../models/Activity";
 
 export default function Horaire() {
-  const [bassin, setBassin] = useState("Grand");
+  const [bassin, setBassin] = useState([]);
+  const [selectedBassin, setSelectedBassin] = useState();
   const [selectedSections, setSelectedSections] = useState([]);
   const [selectedTimeFrom, setSelectedTimeFrom] = useState("");
   const [selectedTimeTo, setSelectedTimeTo] = useState("");
@@ -14,10 +15,26 @@ export default function Horaire() {
   const [activities, setActivities] = useState([]);
   const [selectedActivity, setselectedActivity] = useState();
 
-  const handleBassinChange = (event) => {
-    setBassin(event.target.value);
+  // BASSIN
+  const handleBassinChange = (option) => {
+    setSelectedBassin(option);
     setSelectedSections([]);
   };
+
+  useEffect(() => {
+    fetchEnumsBassin()
+      .then((data) => {
+        setBassin(data);
+        setSelectedBassin(data[0]);
+      })
+      .catch((error) => console.error("Error fetching options:", error));
+  }, []);
+
+  const fetchEnumsBassin = async () => {
+    return getEnumsValues();
+  };
+
+  //SECTION
 
   const handleSectionToggle = (section) => {
     if (selectedSections.includes(section)) {
@@ -27,6 +44,7 @@ export default function Horaire() {
     }
   };
 
+  //HORAIRE AJOUT
   const handleAddScheduleItem = (event) => {
     event.preventDefault();
     if (
@@ -57,12 +75,15 @@ export default function Horaire() {
       }
 
       const newItem = {
-        bassin: bassin,
+        bassin: selectedBassin,
         sections: selectedSections,
         timeFrom: selectedTimeFrom,
         timeTo: selectedTimeTo,
         name: scheduleName,
+        activite: selectedActivity,
       };
+      console.log(newItem);
+
       setSchedule([...schedule, newItem]);
       setSelectedSections([]);
       setSelectedTimeFrom("");
@@ -75,8 +96,9 @@ export default function Horaire() {
     }
   };
 
+  // ACTIVITIES
   useEffect(() => {
-    fetchOptionsFromMethod()
+    fetchActivitiesFromMethod()
       .then((data) => {
         const activityList = createActivityList(data);
         setActivities(activityList);
@@ -91,12 +113,13 @@ export default function Horaire() {
     });
   };
 
-  const fetchOptionsFromMethod = async () => {
+  const fetchActivitiesFromMethod = async () => {
     return getAllActivities();
   };
 
   const handleActivityClick = (option) => {
-    selectedActivity(option);
+    console.log(option);
+    setselectedActivity(option);
   };
 
   return (
@@ -123,6 +146,7 @@ export default function Horaire() {
             <div className="accordion-body">
               <ScheduleForm
                 bassin={bassin}
+                selectedBassin={selectedBassin}
                 selectedSections={selectedSections}
                 selectedTimeFrom={selectedTimeFrom}
                 selectedTimeTo={selectedTimeTo}
@@ -142,7 +166,7 @@ export default function Horaire() {
         </div>
       </div>
       <div className="my-2">
-        <ScheduleGrid schedule={schedule} />
+        <ScheduleGrid schedule={schedule} bassin={bassin} />
       </div>
     </div>
   );

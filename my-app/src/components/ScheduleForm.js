@@ -2,6 +2,7 @@ import React from "react";
 
 const ScheduleForm = ({
   bassin,
+  selectedBassin,
   selectedSections,
   selectedTimeFrom,
   selectedTimeTo,
@@ -18,6 +19,7 @@ const ScheduleForm = ({
 }) => {
   const generateTimeOptions = (minHour, minMinute) => {
     const options = [];
+
     for (let hour = minHour; hour <= 21; hour++) {
       const startMinute = hour === minHour ? minMinute : 0;
       for (let minute = startMinute; minute < 60; minute += 15) {
@@ -43,29 +45,37 @@ const ScheduleForm = ({
             <select
               className="form-select form-select-sm mb-3"
               aria-label=".form-select-lg example"
-              value={bassin}
-              onChange={handleBassinChange}
+              value={selectedBassin}
+              onChange={(e) => handleBassinChange(e.target.value)}
             >
-              <option value="Grand">Grand</option>
-              <option value="Petit">Petit</option>
+              {bassin.map((item, index) => (
+                <option key={index} value={item}>
+                  {item}
+                </option>
+              ))}
             </select>
           </div>
           <div>
             <label>Nombre de section</label>
-            {[...Array(bassin === "Grand" ? 6 : 4)].map((_, index) => (
-              <div key={index} className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id={`section${index}`}
-                  checked={selectedSections.includes(index + 1)}
-                  onChange={() => handleSectionToggle(index + 1)}
-                />
-                <label className="form-check-label" htmlFor={`section${index}`}>
-                  Section {index + 1}
-                </label>
-              </div>
-            ))}
+            {[...Array(selectedBassin === bassin[0] ? 6 : 4)].map(
+              (_, index) => (
+                <div key={index} className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id={`section${index}`}
+                    checked={selectedSections.includes(index + 1)}
+                    onChange={() => handleSectionToggle(index + 1)}
+                  />
+                  <label
+                    className="form-check-label"
+                    htmlFor={`section${index}`}
+                  >
+                    Section {index + 1}
+                  </label>
+                </div>
+              )
+            )}
           </div>
           <div>
             <label>De</label>
@@ -111,21 +121,17 @@ const ScheduleForm = ({
             <select
               className="form-select form-select-sm mb-3"
               aria-label=".form-select-lg example"
-              onChange={handleActivityClick}
+              onChange={(e) => {
+                const selectedActivity = JSON.parse(e.target.value);
+                handleActivityClick(selectedActivity);
+              }}
+              value={selectedActivity ? selectedActivity.id : ""}
             >
               {activities
-                .filter((activity) => {
-                  console.log("bassin:", bassin);
-                  console.log("activity.bassin:", activity.bassin);
-                  console.log(activity.bassin == bassin);
-                  return activity.bassin == bassin;
-                })
+                .filter((activity) => activity.bassin === selectedBassin)
                 .map((activity, index) => (
-                  <option
-                    key={index}
-                    onClick={() => handleActivityClick(activity)}
-                  >
-                    {activity.nom}
+                  <option key={index} value={activity.id}>
+                    {activity.nom} ({activity.bassin})
                   </option>
                 ))}
             </select>

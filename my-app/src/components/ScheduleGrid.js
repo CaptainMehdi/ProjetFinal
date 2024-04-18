@@ -1,6 +1,6 @@
 import React from "react";
 
-const ScheduleGrid = ({ schedule }) => {
+const ScheduleGrid = ({ schedule, bassin }) => {
   const generateTimeIntervals = () => {
     const timeIntervals = [];
     for (let hour = 7; hour <= 20; hour++) {
@@ -57,7 +57,7 @@ const ScheduleGrid = ({ schedule }) => {
                     if (schedule) {
                       const matchingScheduleItems = schedule.filter(
                         (item) =>
-                          item.bassin === "Grand" &&
+                          item.bassin === bassin[0] &&
                           item.sections.includes(sectionIndex + 1) &&
                           item.timeFrom <= time &&
                           item.timeTo >= time
@@ -90,7 +90,7 @@ const ScheduleGrid = ({ schedule }) => {
                     if (schedule) {
                       const matchingScheduleItems = schedule.filter(
                         (item) =>
-                          item.bassin === "Petit" &&
+                          item.bassin === bassin[1] &&
                           item.sections.includes(sectionIndex + 1) &&
                           item.timeFrom <= time &&
                           item.timeTo >= time
