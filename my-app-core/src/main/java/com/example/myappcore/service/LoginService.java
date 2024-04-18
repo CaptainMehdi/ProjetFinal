@@ -1,14 +1,13 @@
 package com.example.myappcore.service;
 
-import com.example.myappcore.dto.UserDetails;
 import com.example.myappcore.dto.UserDto;
+import com.example.myappcore.dto.UserCredentialsDto;
 import com.example.myappcore.dto.UserRegistrationDto;
 import com.example.myappcore.model.User;
 import com.example.myappcore.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,10 +21,10 @@ public class LoginService {
     }
 
     @Transactional
-    public UserDetails login(UserDto userDto){
-        Optional<User> userOptional = userRepository.findByEmail(userDto.email);
-        if(userOptional.isPresent() && Objects.equals(userOptional.get().getPassword(), userDto.password)){
-            return new UserDetails(userOptional.get());
+    public UserDto login(UserCredentialsDto userCredentialsDto){
+        Optional<User> userOptional = userRepository.findByEmail(userCredentialsDto.email);
+        if(userOptional.isPresent() && Objects.equals(userOptional.get().getPassword(), userCredentialsDto.password)){
+            return new UserDto(userOptional.get());
         }
         return null;
     }
@@ -50,8 +49,8 @@ public class LoginService {
     }
 
     @Transactional
-    public boolean registerUser(User user){
-        userRepository.save(user);
+    public boolean registerUser(UserDto userDto){
+        userRepository.save(userDto.toEntity());
         return true;
     }
 }

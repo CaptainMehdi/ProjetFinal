@@ -1,9 +1,6 @@
 package com.example.myappcore.controller;
 
 import com.example.myappcore.dto.HoraireDto;
-import com.example.myappcore.dto.UserDetails;
-import com.example.myappcore.dto.UserDto;
-import com.example.myappcore.dto.UserRegistrationDto;
 import com.example.myappcore.service.HoraireService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +24,8 @@ public class HoraireController {
         return new ResponseEntity<>(horaireService.save(userDto), HttpStatus.OK);
     }
 
-    @GetMapping("/activities")
-    public ResponseEntity<List<HoraireDto>> getAllActivities(){
+    @GetMapping("/all")
+    public ResponseEntity<List<HoraireDto>> getAllHoraire(){
         return new ResponseEntity<>(horaireService.getAllHoraire(), HttpStatus.CREATED);
     }
 }

@@ -13,7 +13,6 @@ import java.util.Date;
 @Entity
 @Data
 @Table(name = "Activite")
-@NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 public class ActivitePiscine {
@@ -25,5 +24,11 @@ public class ActivitePiscine {
     @Enumerated(EnumType.STRING)
     private Bassin bassin;
 
+    public ActivitePiscine() {
+    }
+
+    public ActivitePiscine(Bassin bassin) {
+        this.bassin = bassin;
+    }
 }
 

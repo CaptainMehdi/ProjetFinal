@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ScheduleGrid from "../components/ScheduleGrid";
 import ScheduleForm from "../components/ScheduleForm";
+import { getAllActivities } from "../api/ApiCalls";
 
 export default function Horaire() {
   const [bassin, setBassin] = useState("Grand");
@@ -9,6 +10,8 @@ export default function Horaire() {
   const [selectedTimeTo, setSelectedTimeTo] = useState("");
   const [schedule, setSchedule] = useState([]);
   const [scheduleName, setScheduleName] = useState("");
+  const [activities, setActivities] = useState([]);
+  const [selectedActivity, setselectedActivity] = useState();
 
   const handleBassinChange = (event) => {
     setBassin(event.target.value);
@@ -71,6 +74,23 @@ export default function Horaire() {
     }
   };
 
+  useEffect(() => {
+    fetchOptionsFromMethod()
+      .then((data) => {
+        setActivities(data);
+        console.log(data);
+      })
+      .catch((error) => console.error("Error fetching options:", error));
+  }, []);
+
+  const fetchOptionsFromMethod = async () => {
+    return getAllActivities();
+  };
+
+  const handleActivityClick = (option) => {
+    selectedActivity(option);
+  };
+
   return (
     <div className="container">
       <div className="accordion accordion-flush" id="accordionFlushExample">
@@ -105,6 +125,9 @@ export default function Horaire() {
                 setSelectedTimeFrom={setSelectedTimeFrom}
                 setSelectedTimeTo={setSelectedTimeTo}
                 setScheduleName={setScheduleName}
+                handleActivityClick={handleActivityClick}
+                activities={activities}
+                selectedActivity={selectedActivity}
               />
             </div>
           </div>

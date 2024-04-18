@@ -1,5 +1,8 @@
 package com.example.myappcore;
 
+import com.example.myappcore.dto.BainsLibreDto;
+import com.example.myappcore.dto.CoursDto;
+import com.example.myappcore.dto.UserDto;
 import com.example.myappcore.dto.UserRegistrationDto;
 import com.example.myappcore.model.BainsLibre;
 import com.example.myappcore.model.Cours;
@@ -29,43 +32,31 @@ public class MyAppCoreApplication implements CommandLineRunner {
 
     public void run(String... args) throws Exception {
 
-        //Users
-        loginService.registerUser(new User("mehdi@gmail.com","mehdi","Mehdi","Diyani", Role.admin));
-        loginService.registerUser(new User("erika@gmail.com","erika","Erika","Ross",Role.prof));
-        //Cours
-        for (int i = 1; i <= 9; i++) {
-            Cours cours = new Cours();
-            cours.setEleve(null);
-            cours.setRequis("Requis"+i);
-            cours.setNom("Nageur " + i);
-            cours.setBassin(Bassin.petit);
-            cours.setProf(null);
-            cours.setMaxEleves(6);
-            coursService.saveCours(cours);
-        }
-        for (int i = 1; i <= 9; i++) {
-            Cours cours = new Cours();
-            cours.setEleve(null);
-            cours.setRequis("Requis"+i);
-            cours.setNom("Nageur " + i);
-            cours.setBassin(Bassin.grand);
-            cours.setProf(null);
-            cours.setMaxEleves(6);
-            coursService.saveCours(cours);
-        }
-        //BainsLibre
-        for (int i = 0; i < 2; i++) {
-            BainsLibre bainsLibre = new BainsLibre();
-            bainsLibre.setBassin(Bassin.petit);
-            bainsLibre.setSauveteurs(null);
-            bainsLibreService.saveBainsLibre(bainsLibre);
-        }
-        for (int i = 0; i < 2; i++) {
-            BainsLibre bainsLibre = new BainsLibre();
-            bainsLibre.setBassin(Bassin.grand);
-            bainsLibre.setSauveteurs(null);
-            bainsLibreService.saveBainsLibre(bainsLibre);
-        }
+        // Register Users
+        loginService.registerUser(new UserDto("mehdi@gmail.com", "mehdi", "Mehdi", "Diyani", Role.admin));
+        loginService.registerUser(new UserDto("erika@gmail.com", "erika", "Erika", "Ross", Role.prof));
+
+        User user = new User("silvie@gmail.com","silvie", "Silvie", "red", Role.prof);
+        loginService.registerUser(new UserDto(user));
+
+// Save Cours
+        coursService.saveCours(new CoursDto(Bassin.petit, 6, null, null, "Requis 1", "Nageur 1"));
+        coursService.saveCours(new CoursDto(Bassin.petit, 6, null, null, "Requis 2", "Nageur 2"));
+        coursService.saveCours(new CoursDto(Bassin.petit, 6, null, null, "Requis 3", "Nageur 3"));
+        coursService.saveCours(new CoursDto(Bassin.petit, 6, null, null, "Requis 4", "Nageur 4"));
+        coursService.saveCours(new CoursDto(Bassin.petit, 6, null, null, "Requis 5", "Nageur 5"));
+
+        coursService.saveCours(new CoursDto(Bassin.grand, 6, null, null, "Requis 1", "Nageur 1"));
+        coursService.saveCours(new CoursDto(Bassin.grand, 6, null, null, "Requis 2", "Nageur 2"));
+        coursService.saveCours(new CoursDto(Bassin.grand, 6, null, null, "Requis 3", "Nageur 3"));
+        coursService.saveCours(new CoursDto(Bassin.grand, 6, null, null, "Requis 4", "Nageur 4"));
+        coursService.saveCours(new CoursDto(Bassin.grand, 6, null, null, "Requis 5", "Nageur 5"));
+
+// Save BainsLibre
+        bainsLibreService.saveBainsLibre(new BainsLibreDto(Bassin.petit, null));
+        bainsLibreService.saveBainsLibre(new BainsLibreDto(Bassin.grand, null));
+
+
         System.out.println("DONE");
     }
 

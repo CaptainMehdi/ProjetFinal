@@ -33,5 +33,12 @@ public class Cours extends ActivitePiscine {
 
     private String nom;
 
+    public Cours(Bassin bassin, int maxEleves, List<User> eleve, User prof, String requis, String nom) {
+        super(bassin);
+        this.maxEleves = maxEleves;
+        this.eleve = eleve;
+        this.prof = prof;
+        this.requis = requis;
+        this.nom = nom;
+    }
 }
-

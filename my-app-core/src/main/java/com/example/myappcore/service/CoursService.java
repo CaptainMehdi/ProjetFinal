@@ -1,42 +1,48 @@
 package com.example.myappcore.service;
 
-import com.example.myappcore.dto.ActivitePiscineDto;
-import com.example.myappcore.dto.CoursAjoutDto;
 import com.example.myappcore.dto.CoursDto;
-import com.example.myappcore.model.ActivitePiscine;
+import com.example.myappcore.dto.UserDto;
 import com.example.myappcore.model.Cours;
+import com.example.myappcore.model.User;
 import com.example.myappcore.repository.CoursRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CoursService {
-    private CoursRepository coursRepository;
 
+    private final CoursRepository coursRepository;
+
+    @Autowired
     public CoursService(CoursRepository coursRepository) {
         this.coursRepository = coursRepository;
     }
 
-    public List<CoursDto> getAllCours() {
-        List<Cours> coursList = coursRepository.findAll();
+    public CoursDto saveCours(CoursDto coursDto) {
+        Cours cours = new Cours();
+        cours.setId(coursDto.getId());
+        cours.setBassin(coursDto.getBassin());
+        cours.setMaxEleves(coursDto.getMaxEleves());
+        List<User> eleves = coursDto.getEleve() == null ? new ArrayList<>() :
+                coursDto.getEleve().stream().map(UserDto::toEntity).collect(Collectors.toList());
+        cours.setEleve(eleves);
 
-        List<CoursDto> coursDtos = new ArrayList<>();
-        for (Cours cours : coursList) {
-            CoursDto dto = convertToDto(cours);
-            coursDtos.add(dto);
-        }
-        return coursDtos;
+        User prof = coursDto.getProf() == null ? null : coursDto.getProf().toEntity();
+        cours.setProf(prof);
+
+        cours.setRequis(coursDto.getRequis());
+        cours.setNom(coursDto.getNom());
+        Cours savedCours = coursRepository.save(cours);
+        return new CoursDto(savedCours);
     }
 
-    private CoursDto convertToDto(Cours activitePiscine) {
-        CoursDto dto = new CoursDto();
-
-        return dto;
-    }
-
-    public Cours saveCours(Cours cours){
-        return coursRepository.save(cours);
+    public Optional<CoursDto> getCoursById(Long id) {
+        Optional<Cours> coursOptional = coursRepository.findById(id);
+        return coursOptional.map(CoursDto::new);
     }
 }

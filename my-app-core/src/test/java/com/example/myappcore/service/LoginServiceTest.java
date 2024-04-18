@@ -1,13 +1,11 @@
 package com.example.myappcore.service;
 
 import com.example.myappcore.dto.UserRegistrationDto;
-import com.example.myappcore.dto.UserDetails;
 import com.example.myappcore.dto.UserDto;
+import com.example.myappcore.dto.UserCredentialsDto;
 import com.example.myappcore.model.User;
 import com.example.myappcore.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.event.annotation.BeforeTestMethod;
 
 import java.util.Optional;
 
@@ -25,22 +23,22 @@ class LoginServiceTest {
         String email = "mehdi@gmail.com";
         String password = "mehdi";
 
-        UserDto userDto = new UserDto(email, password);
-        UserDetails userDetails = loginService.login(userDto);
-        System.out.println(userDetails);
-        assertEquals(email, userDetails.getEmail());
+        UserCredentialsDto userCredentialsDto = new UserCredentialsDto(email, password);
+        UserDto userDto = loginService.login(userCredentialsDto);
+        System.out.println(userDto);
+        assertEquals(email, userDto.getEmail());
     }
 
     @Test
     public void testLogin_InvalidEmail() {
         String email = "nonexistent@example.com";
         String password = "password123";
-        UserDto userDto = new UserDto(email, password);
+        UserCredentialsDto userCredentialsDto = new UserCredentialsDto(email, password);
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
-        UserDetails userDetails = loginService.login(userDto);
+        UserDto userDto = loginService.login(userCredentialsDto);
 
-        assertNull(userDetails);
+        assertNull(userDto);
     }
 
     @Test
@@ -48,13 +46,13 @@ class LoginServiceTest {
         String email = "test@example.com";
         String correctPassword = "correctPassword";
         String incorrectPassword = "incorrectPassword";
-        UserDto userDto = new UserDto(email, incorrectPassword);
+        UserCredentialsDto userCredentialsDto = new UserCredentialsDto(email, incorrectPassword);
         User user = new User(email, correctPassword);
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
 
-        UserDetails userDetails = loginService.login(userDto);
+        UserDto userDto = loginService.login(userCredentialsDto);
 
-        assertNull(userDetails);
+        assertNull(userDto);
     }
 
     @Test

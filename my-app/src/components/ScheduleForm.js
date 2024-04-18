@@ -12,6 +12,9 @@ const ScheduleForm = ({
   setSelectedTimeFrom,
   setSelectedTimeTo,
   setScheduleName,
+  handleActivityClick,
+  activities,
+  selectedActivity,
 }) => {
   const generateTimeOptions = (minHour, minMinute) => {
     const options = [];
@@ -102,6 +105,23 @@ const ScheduleForm = ({
               value={scheduleName}
               onChange={(e) => setScheduleName(e.target.value)}
             />
+          </div>
+          <div>
+            <label>Choisir une activites:</label>
+            <select
+              className="form-select form-select-sm mb-3"
+              aria-label=".form-select-lg example"
+              onChange={handleActivityClick}
+            >
+              {activities.map((activity, index) => (
+                <option
+                  key={index}
+                  onClick={() => handleActivityClick(activity)}
+                >
+                  {activity}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <button type="submit" className="btn btn-primary my-3">

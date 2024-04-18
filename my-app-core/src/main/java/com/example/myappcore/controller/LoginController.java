@@ -1,7 +1,7 @@
 package com.example.myappcore.controller;
 
-import com.example.myappcore.dto.UserDetails;
 import com.example.myappcore.dto.UserDto;
+import com.example.myappcore.dto.UserCredentialsDto;
 import com.example.myappcore.dto.UserRegistrationDto;
 import com.example.myappcore.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,8 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDetails> login(@RequestBody UserDto userDto) {
-        return new ResponseEntity<>(loginService.login(userDto), HttpStatus.OK);
+    public ResponseEntity<UserDto> login(@RequestBody UserCredentialsDto userCredentialsDto) {
+        return new ResponseEntity<>(loginService.login(userCredentialsDto), HttpStatus.OK);
     }
 
     @PostMapping("/register")
