@@ -113,14 +113,21 @@ const ScheduleForm = ({
               aria-label=".form-select-lg example"
               onChange={handleActivityClick}
             >
-              {activities.map((activity, index) => (
-                <option
-                  key={index}
-                  onClick={() => handleActivityClick(activity)}
-                >
-                  {activity}
-                </option>
-              ))}
+              {activities
+                .filter((activity) => {
+                  console.log("bassin:", bassin);
+                  console.log("activity.bassin:", activity.bassin);
+                  console.log(activity.bassin == bassin);
+                  return activity.bassin == bassin;
+                })
+                .map((activity, index) => (
+                  <option
+                    key={index}
+                    onClick={() => handleActivityClick(activity)}
+                  >
+                    {activity.nom}
+                  </option>
+                ))}
             </select>
           </div>
           <div>

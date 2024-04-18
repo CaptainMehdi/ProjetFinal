@@ -25,7 +25,6 @@ public class CoursService {
 
     public CoursDto saveCours(CoursDto coursDto) {
         Cours cours = new Cours();
-        cours.setId(coursDto.getId());
         cours.setBassin(coursDto.getBassin());
         cours.setMaxEleves(coursDto.getMaxEleves());
         List<User> eleves = coursDto.getEleve() == null ? new ArrayList<>() :

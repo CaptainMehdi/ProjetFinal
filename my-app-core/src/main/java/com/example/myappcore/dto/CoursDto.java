@@ -21,6 +21,7 @@ public class CoursDto extends ActivitePiscineDto {
     private String nom;
 
     public CoursDto(Cours cours) {
+        this.id = cours.getId();
         this.bassin = cours.getBassin();
         this.maxEleves = cours.getMaxEleves();
         this.eleve = cours.getEleve() == null ? new ArrayList<>() : cours.getEleve().stream()

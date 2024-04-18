@@ -14,16 +14,13 @@ public class ActivitePiscineDto {
     private Long id;
     private Bassin bassin;
 
-    private String type;
-
     public ActivitePiscineDto() {
 
     }
 
-    public ActivitePiscineDto(Long id, Bassin bassin, String type) {
+    public ActivitePiscineDto(Long id, Bassin bassin) {
         this.id = id;
         this.bassin = bassin;
-        this.type = type;
     }
 
     public void setBassin(Bassin bassin) {

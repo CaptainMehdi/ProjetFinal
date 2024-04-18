@@ -41,7 +41,7 @@ public class ActivitePiscineService {
         allActivities.addAll(bainsLibreList.stream()
                 .map(BainsLibreDto::new)
                 .collect(Collectors.toList()));
-        System.out.println(allActivities);
+
         return allActivities;
     }
 

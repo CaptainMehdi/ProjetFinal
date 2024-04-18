@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ScheduleGrid from "../components/ScheduleGrid";
 import ScheduleForm from "../components/ScheduleForm";
 import { getAllActivities } from "../api/ApiCalls";
+import Activity from "../models/Activity";
 
 export default function Horaire() {
   const [bassin, setBassin] = useState("Grand");
@@ -77,11 +78,18 @@ export default function Horaire() {
   useEffect(() => {
     fetchOptionsFromMethod()
       .then((data) => {
-        setActivities(data);
-        console.log(data);
+        const activityList = createActivityList(data);
+        setActivities(activityList);
+        console.log(activityList);
       })
       .catch((error) => console.error("Error fetching options:", error));
   }, []);
+
+  const createActivityList = (data) => {
+    return data.map((item) => {
+      return new Activity(item.id, item.nom, item.bassin);
+    });
+  };
 
   const fetchOptionsFromMethod = async () => {
     return getAllActivities();
