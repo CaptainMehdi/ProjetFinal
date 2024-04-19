@@ -20,8 +20,9 @@ public class HoraireController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<HoraireDto> save(@RequestBody HoraireDto userDto) {
-        return new ResponseEntity<>(horaireService.save(userDto), HttpStatus.OK);
+    public ResponseEntity<HoraireDto> save(@RequestBody HoraireDto horaireDto) {
+        System.out.println(horaireDto);
+        return new ResponseEntity<>(horaireService.save(horaireDto), HttpStatus.OK);
     }
 
     @GetMapping("/all")

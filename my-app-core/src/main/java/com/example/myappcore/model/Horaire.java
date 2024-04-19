@@ -1,8 +1,10 @@
 package com.example.myappcore.model;
 
+import com.example.myappcore.utils.Bassin;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
@@ -22,13 +24,20 @@ public class Horaire {
     private String name;
 
     @Column(name = "\"from\"")
-    private Date from;
+    private String from;
 
     @Column(name = "\"to\"")
-    private Date to;
+    private String to;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "activite_piscine_id")
     private ActivitePiscine activitePiscine;
+
+    private Bassin bassin;
+
+    @ElementCollection
+    @CollectionTable(name = "longueur", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "longueur")
+    private List<Integer> longueur;
 
 }

@@ -20,12 +20,13 @@ public class HoraireService {
     }
 
     public HoraireDto save(HoraireDto horaireDto){
-
         Horaire horaire = new Horaire();
         horaire.setTo(horaireDto.getTo());
         horaire.setFrom(horaireDto.getFrom());
         horaire.setName(horaireDto.getName());
         horaire.setActivitePiscine(activitePiscineService.getActivitiesById(horaireDto.getActivitePiscineId()));
+        horaire.setBassin(horaireDto.getBassin());
+        horaire.setLongueur(horaireDto.getLongueur());
         horaireRepository.save(horaire);
         return horaireDto;
     }

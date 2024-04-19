@@ -11,7 +11,8 @@ export default function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    login({ email, password }).then((response) => {
+    try {
+      const response = await login({ email, password });
       if (response) {
         setAuthenticated(true);
         history.push(`/home/${response.id}`);
@@ -19,7 +20,10 @@ export default function Login() {
       } else {
         toast.error("Bad credential");
       }
-    });
+    } catch (error) {
+      console.error("Error during login:", error);
+      toast.error("Bad credential");
+    }
   };
 
   return (

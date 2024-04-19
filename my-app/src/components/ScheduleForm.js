@@ -45,9 +45,12 @@ const ScheduleForm = ({
             <select
               className="form-select form-select-sm mb-3"
               aria-label=".form-select-lg example"
-              value={selectedBassin}
               onChange={(e) => handleBassinChange(e.target.value)}
+              value={selectedBassin || ""}
             >
+              <option value="" disabled selected>
+                Select Bassin
+              </option>
               {bassin.map((item, index) => (
                 <option key={index} value={item}>
                   {item}
@@ -121,12 +124,15 @@ const ScheduleForm = ({
             <select
               className="form-select form-select-sm mb-3"
               aria-label=".form-select-lg example"
+              value={selectedActivity || ""}
               onChange={(e) => {
                 const selectedActivity = JSON.parse(e.target.value);
                 handleActivityClick(selectedActivity);
               }}
-              value={selectedActivity ? selectedActivity.id : ""}
             >
+              <option value="" disabled>
+                Select Activity
+              </option>
               {activities
                 .filter((activity) => activity.bassin === selectedBassin)
                 .map((activity, index) => (

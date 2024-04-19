@@ -9,10 +9,10 @@ export const register = async (userData) => {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to login");
+      throw new Error("Failed to register");
     }
     const data = await response.json();
-    console.log("Login successful:", data);
+    console.log("Register successful:", data);
     return data;
   } catch (error) {
     console.error("Error:", error.message);
@@ -33,6 +33,7 @@ export const login = async (userData) => {
     if (!response.ok) {
       throw new Error("Failed to login");
     }
+
     const data = await response.json();
 
     return data;
@@ -89,10 +90,10 @@ export const saveHoraire = async (horaire) => {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to login");
+      throw new Error("Failed to save horaire");
     }
     const data = await response.json();
-    console.log("Login successful:", data);
+    console.log("Horaire saved successful:", data);
     return data;
   } catch (error) {
     console.error("Error:", error.message);
@@ -104,12 +105,12 @@ export const getEnumsValues = async () => {
   try {
     const response = await fetch("http://localhost:8080/api/enumValues");
     if (!response.ok) {
-      throw new Error("Failed to fetch activities");
+      throw new Error("Failed to fetch enums");
     }
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching activities:", error);
+    console.error("Error fetching enums:", error);
     throw error;
   }
 };

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ScheduleGrid from "../components/ScheduleGrid";
 import ScheduleForm from "../components/ScheduleForm";
-import { getAllActivities, getEnumsValues } from "../api/ApiCalls";
+import { getAllActivities, getEnumsValues, saveHoraire } from "../api/ApiCalls";
 import Activity from "../models/Activity";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import HoraireGrid from "../models/HoraireGrid";
 
 export default function Horaire() {
   const [bassin, setBassin] = useState([]);
@@ -19,13 +22,13 @@ export default function Horaire() {
   const handleBassinChange = (option) => {
     setSelectedBassin(option);
     setSelectedSections([]);
+    setselectedActivity("");
   };
 
   useEffect(() => {
     fetchEnumsBassin()
       .then((data) => {
         setBassin(data);
-        setSelectedBassin(data[0]);
       })
       .catch((error) => console.error("Error fetching options:", error));
   }, []);
@@ -45,52 +48,60 @@ export default function Horaire() {
   };
 
   //HORAIRE AJOUT
-  const handleAddScheduleItem = (event) => {
+  const handleAddScheduleItem = async (event) => {
     event.preventDefault();
     if (
       selectedSections.length > 0 &&
       selectedTimeFrom &&
       selectedTimeTo &&
-      scheduleName
+      scheduleName &&
+      selectedActivity &&
+      selectedBassin
     ) {
       const overlappingItem = schedule.find(
         (item) =>
-          item.sections.some((section) => selectedSections.includes(section)) &&
-          ((item.timeFrom >= selectedTimeFrom &&
-            item.timeFrom <= selectedTimeTo) ||
-            (item.timeTo >= selectedTimeFrom &&
-              item.timeTo <= selectedTimeTo) ||
-            (selectedTimeFrom >= item.timeFrom &&
-              selectedTimeFrom <= item.timeTo) ||
-            (selectedTimeTo >= item.timeFrom &&
-              selectedTimeTo <= item.timeTo)) &&
-          item.bassin == bassin
+          item.longueur.some((section) => selectedSections.includes(section)) &&
+          ((item.from >= selectedTimeFrom && item.from <= selectedTimeTo) ||
+            (item.to >= selectedTimeFrom && item.to <= selectedTimeTo) ||
+            (selectedTimeFrom >= item.from && selectedTimeFrom <= item.to) ||
+            (selectedTimeTo >= item.from && selectedTimeTo <= item.to)) &&
+          item.bassin == selectedBassin
       );
 
       if (overlappingItem) {
-        alert(
+        toast.error(
           "Il y a déjà un élément planifié qui se chevauche avec cette plage horaire et ces sections."
         );
         return;
       }
 
-      const newItem = {
-        bassin: selectedBassin,
-        sections: selectedSections,
-        timeFrom: selectedTimeFrom,
-        timeTo: selectedTimeTo,
+      const newItem = new HoraireGrid({
         name: scheduleName,
-        activite: selectedActivity,
-      };
+        from: selectedTimeFrom,
+        to: selectedTimeTo,
+        activitePiscineId: selectedActivity,
+        bassin: selectedBassin,
+        longueur: selectedSections,
+      });
+
       console.log(newItem);
 
-      setSchedule([...schedule, newItem]);
-      setSelectedSections([]);
-      setSelectedTimeFrom("");
-      setSelectedTimeTo("");
-      setScheduleName("");
+      await saveHoraire(newItem).then((data) => {
+        if (data) {
+          toast.success("Successfully added ✓");
+          setSchedule([...schedule, newItem]);
+          setSelectedSections([]);
+          setSelectedTimeFrom("");
+          setSelectedTimeTo("");
+          setScheduleName("");
+          setselectedActivity("");
+          setSelectedBassin("");
+        } else {
+          toast.error("Error lors de la sauvegarde");
+        }
+      });
     } else {
-      alert(
+      toast.error(
         "Veuillez sélectionner des sections, des heures et un nom avant d'ajouter au planning."
       );
     }
@@ -102,7 +113,6 @@ export default function Horaire() {
       .then((data) => {
         const activityList = createActivityList(data);
         setActivities(activityList);
-        console.log(activityList);
       })
       .catch((error) => console.error("Error fetching options:", error));
   }, []);
@@ -118,7 +128,6 @@ export default function Horaire() {
   };
 
   const handleActivityClick = (option) => {
-    console.log(option);
     setselectedActivity(option);
   };
 
@@ -168,6 +177,7 @@ export default function Horaire() {
       <div className="my-2">
         <ScheduleGrid schedule={schedule} bassin={bassin} />
       </div>
+      <ToastContainer />
     </div>
   );
 }

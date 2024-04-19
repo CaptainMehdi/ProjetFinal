@@ -54,13 +54,13 @@ const ScheduleGrid = ({ schedule, bassin }) => {
               <div className="container-fluid">
                 <div className="row">
                   {[...Array(6)].map((_, sectionIndex) => {
-                    if (schedule) {
+                    if (schedule && schedule.length > 0) {
                       const matchingScheduleItems = schedule.filter(
                         (item) =>
-                          item.bassin === bassin[0] &&
-                          item.sections.includes(sectionIndex + 1) &&
-                          item.timeFrom <= time &&
-                          item.timeTo >= time
+                          item.bassin == bassin[0] &&
+                          item.longueur.includes(sectionIndex + 1) &&
+                          item.from <= time &&
+                          item.to >= time
                       );
 
                       if (matchingScheduleItems.length > 0) {
@@ -87,13 +87,13 @@ const ScheduleGrid = ({ schedule, bassin }) => {
               <div className="container-fluid">
                 <div className="row">
                   {[...Array(4)].map((_, sectionIndex) => {
-                    if (schedule) {
+                    if (schedule && schedule.length > 0) {
                       const matchingScheduleItems = schedule.filter(
                         (item) =>
-                          item.bassin === bassin[1] &&
-                          item.sections.includes(sectionIndex + 1) &&
-                          item.timeFrom <= time &&
-                          item.timeTo >= time
+                          item.bassin == bassin[1] &&
+                          item.longueur.includes(sectionIndex + 1) &&
+                          item.from <= time &&
+                          item.to >= time
                       );
 
                       if (matchingScheduleItems.length > 0) {
