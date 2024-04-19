@@ -48,7 +48,7 @@ const ScheduleForm = ({
               onChange={(e) => handleBassinChange(e.target.value)}
               value={selectedBassin || ""}
             >
-              <option value="" disabled selected>
+              <option value="" disabled>
                 Select Bassin
               </option>
               {bassin.map((item, index) => (

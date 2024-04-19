@@ -24,12 +24,15 @@ public class BainsLibreService {
     }
 
     public BainsLibreDto saveBainsLibre(BainsLibreDto bainsLibreDto) {
-        BainsLibre bainsLibre = new BainsLibre();
-        bainsLibre.setId(bainsLibreDto.getId());
-        bainsLibre.setBassin(bainsLibreDto.getBassin());
-        bainsLibre.setSauveteurs(null);
-        BainsLibre savedBainsLibre = bainsLibreRepository.save(bainsLibre);
-        return new BainsLibreDto(savedBainsLibre);
+        if(bainsLibreDto != null){
+            BainsLibre bainsLibre = new BainsLibre();
+            bainsLibre.setId(bainsLibreDto.getId());
+            bainsLibre.setBassin(bainsLibreDto.getBassin());
+            bainsLibre.setSauveteurs(null);
+            BainsLibre savedBainsLibre = bainsLibreRepository.save(bainsLibre);
+            return new BainsLibreDto(savedBainsLibre);
+        }
+        return null;
     }
 
     public Optional<BainsLibreDto> getBainsLibreById(Long id) {

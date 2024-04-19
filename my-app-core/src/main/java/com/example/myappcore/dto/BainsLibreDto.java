@@ -19,8 +19,6 @@ public class BainsLibreDto extends ActivitePiscineDto{
     public BainsLibreDto(BainsLibre bainsLibre) {
         this.id = bainsLibre.getId();
         this.bassin = bainsLibre.getBassin();
-
-        // Check if bainsLibre.getSauveteurs() is not null before mapping
         this.sauveteurs = bainsLibre.getSauveteurs() == null ? new  ArrayList<>() : bainsLibre.getSauveteurs().stream()
                 .map(UserDto::new)
                 .collect(Collectors.toList());
@@ -30,6 +28,7 @@ public class BainsLibreDto extends ActivitePiscineDto{
     public BainsLibreDto(Bassin bassin, List<UserDto> sauveteurs) {
         this.bassin = bassin;
         this.sauveteurs = sauveteurs;
+        this.nom = "Bains Libres";
     }
 
 }

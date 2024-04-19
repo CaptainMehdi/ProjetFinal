@@ -20,29 +20,34 @@ public class HoraireService {
     }
 
     public HoraireDto save(HoraireDto horaireDto){
-        Horaire horaire = new Horaire();
-        horaire.setTo(horaireDto.getTo());
-        horaire.setFrom(horaireDto.getFrom());
-        horaire.setName(horaireDto.getName());
-        horaire.setActivitePiscine(activitePiscineService.getActivitiesById(horaireDto.getActivitePiscineId()));
-        horaire.setBassin(horaireDto.getBassin());
-        horaire.setLongueur(horaireDto.getLongueur());
-        horaireRepository.save(horaire);
-        return horaireDto;
+        if(horaireDto != null){
+            Horaire horaire = new Horaire();
+            horaire.setTo(horaireDto.getTo());
+            horaire.setFrom(horaireDto.getFrom());
+            horaire.setName(horaireDto.getName());
+            horaire.setActivitePiscine(activitePiscineService.getActivitiesById(horaireDto.getActivitePiscineId()));
+            horaire.setBassin(horaireDto.getBassin());
+            horaire.setLongueur(horaireDto.getLongueur());
+            horaireRepository.save(horaire);
+            return horaireDto;
+        }
+        return null;
     }
 
     public List<HoraireDto> getAllHoraire(){
-        Optional<List<Horaire>> horaires = horaireRepository.getAllHoraire();
+        Optional<List<Horaire>> horairesOptional = horaireRepository.getAllHoraire();
         List<HoraireDto> horaireDtos = new ArrayList<>();
 
-        if(horaires.isPresent()){
-            for(Horaire horaire : horaires.get()){
+        if (horairesOptional.isPresent()) {
+            for (Horaire horaire : horairesOptional.get()) {
                 HoraireDto horaireDto = new HoraireDto();
                 horaireDto.setId(horaire.getId());
                 horaireDto.setName(horaire.getName());
-                horaireDto.setTo(horaire.getTo());
                 horaireDto.setFrom(horaire.getFrom());
+                horaireDto.setTo(horaire.getTo());
                 horaireDto.setActivitePiscineId(horaire.getActivitePiscine().getId());
+                horaireDto.setBassin(horaire.getBassin());
+                horaireDto.setLongueur(horaire.getLongueur());
                 horaireDtos.add(horaireDto);
             }
         }

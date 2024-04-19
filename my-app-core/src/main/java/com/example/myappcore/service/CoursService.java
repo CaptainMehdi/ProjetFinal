@@ -24,20 +24,23 @@ public class CoursService {
     }
 
     public CoursDto saveCours(CoursDto coursDto) {
-        Cours cours = new Cours();
-        cours.setBassin(coursDto.getBassin());
-        cours.setMaxEleves(coursDto.getMaxEleves());
-        List<User> eleves = coursDto.getEleve() == null ? new ArrayList<>() :
-                coursDto.getEleve().stream().map(UserDto::toEntity).collect(Collectors.toList());
-        cours.setEleve(eleves);
+        if(coursDto != null){
+            Cours cours = new Cours();
+            cours.setBassin(coursDto.getBassin());
+            cours.setMaxEleves(coursDto.getMaxEleves());
+            List<User> eleves = coursDto.getEleve() == null ? new ArrayList<>() :
+                    coursDto.getEleve().stream().map(UserDto::toEntity).collect(Collectors.toList());
+            cours.setEleve(eleves);
 
-        User prof = coursDto.getProf() == null ? null : coursDto.getProf().toEntity();
-        cours.setProf(prof);
+            User prof = coursDto.getProf() == null ? null : coursDto.getProf().toEntity();
+            cours.setProf(prof);
 
-        cours.setRequis(coursDto.getRequis());
-        cours.setNom(coursDto.getNom());
-        Cours savedCours = coursRepository.save(cours);
-        return new CoursDto(savedCours);
+            cours.setRequis(coursDto.getRequis());
+            cours.setNom(coursDto.getNom());
+            Cours savedCours = coursRepository.save(cours);
+            return new CoursDto(savedCours);
+        }
+        return null;
     }
 
     public Optional<CoursDto> getCoursById(Long id) {

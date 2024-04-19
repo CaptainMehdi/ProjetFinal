@@ -2,13 +2,13 @@ import React from "react";
 
 export default function Navbar() {
   return (
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <a class="navbar-brand mx-3" href="#">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+      <a className="navbar-brand mx-3" href="#">
         Home
       </a>
-      <div class="d-flex flex-grow-1 justify-content-end">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto"></ul>
+      <div className="d-flex flex-grow-1 justify-content-end">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav mr-auto"></ul>
         </div>
       </div>
     </nav>
