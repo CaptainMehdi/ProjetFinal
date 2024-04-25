@@ -16,6 +16,9 @@ const ScheduleForm = ({
   handleActivityClick,
   activities,
   selectedActivity,
+  days,
+  handleDays,
+  selectedDay,
 }) => {
   const generateTimeOptions = (minHour, minMinute) => {
     const options = [];
@@ -40,6 +43,24 @@ const ScheduleForm = ({
     <>
       <form onSubmit={handleAddScheduleItem}>
         <div className="container">
+          <div>
+            <label>Jour de la semaine</label>
+            <select
+              className="form-select form-select-sm mb-3"
+              aria-label=".form-select-lg example"
+              onChange={(e) => handleDays(e.target.value)}
+              value={selectedDay || ""}
+            >
+              <option value="" disabled>
+                Choisir un jour
+              </option>
+              {days.map((item, index) => (
+                <option key={index} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
           <div>
             <label>Bassin</label>
             <select

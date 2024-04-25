@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
-const ScheduleGrid = ({ schedule, bassin }) => {
+const ScheduleGrid = ({ schedule, bassin, handleNext, handlePrev, day }) => {
   const generateTimeIntervals = () => {
     const timeIntervals = [];
     for (let hour = 7; hour <= 20; hour++) {
@@ -20,7 +23,16 @@ const ScheduleGrid = ({ schedule, bassin }) => {
     <>
       <div className="container">
         <div className="row">
-          <h3 className="text-center">Lundi</h3>
+          <div className="d-flex justify-content-between my-3 p-0 ">
+            <button className="btn btn-light" onClick={handlePrev}>
+              <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+            <h3 className="text-center mx-3 mb-0">{day}</h3>
+            <button className="btn btn-light" onClick={handleNext}>
+              <FontAwesomeIcon icon={faArrowRight} />
+            </button>
+          </div>
+
           <div className="col-1 border">Temps</div>
           <div className="col-6 border">
             <div className="container">
@@ -57,6 +69,7 @@ const ScheduleGrid = ({ schedule, bassin }) => {
                     if (schedule && schedule.length > 0) {
                       const matchingScheduleItems = schedule.filter(
                         (item) =>
+                          item.day == day &&
                           item.bassin == bassin[0] &&
                           item.longueur.includes(sectionIndex + 1) &&
                           item.from <= time &&
@@ -90,6 +103,7 @@ const ScheduleGrid = ({ schedule, bassin }) => {
                     if (schedule && schedule.length > 0) {
                       const matchingScheduleItems = schedule.filter(
                         (item) =>
+                          item.day == day &&
                           item.bassin == bassin[1] &&
                           item.longueur.includes(sectionIndex + 1) &&
                           item.from <= time &&

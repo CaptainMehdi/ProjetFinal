@@ -42,6 +42,20 @@ export const login = async (userData) => {
   }
 };
 
+export const getUserById = async (id) => {
+  try {
+    const response = await fetch("http://localhost:8080/api/getUser/" + id);
+    if (!response.ok) {
+      throw new Error("Failed to fetch user");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    throw error;
+  }
+};
+
 export const isAuthenticated = () => {
   const authenticated = localStorage.getItem("authenticated");
   return authenticated === "true";
@@ -111,6 +125,31 @@ export const getEnumsValues = async () => {
     return data;
   } catch (error) {
     console.error("Error fetching enums:", error);
+    throw error;
+  }
+};
+
+export const createFile = async (schedule) => {
+  try {
+    const response = await fetch(
+      "http://localhost:8080/api/horaire/createSchedule",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(schedule),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to register");
+    }
+    const data = await response.json();
+    console.log("Register successful:", data);
+    return data;
+  } catch (error) {
+    console.error("Error:", error.message);
     throw error;
   }
 };

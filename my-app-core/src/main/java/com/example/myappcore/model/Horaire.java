@@ -1,6 +1,7 @@
 package com.example.myappcore.model;
 
 import com.example.myappcore.utils.Bassin;
+import com.example.myappcore.utils.Jour;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,5 +40,7 @@ public class Horaire {
     @CollectionTable(name = "longueur", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "longueur")
     private List<Integer> longueur;
+
+    private Jour day;
 
 }

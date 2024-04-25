@@ -39,6 +39,6 @@ public class UserDto {
 
 
     public User toEntity() {
-        return new User(getEmail(),getPassword(),getFirstname(),getFirstname(),getRole());
+        return new User(getEmail(),getPassword(),getLastname(),getFirstname(),getRole());
     }
 }

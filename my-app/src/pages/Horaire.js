@@ -6,6 +6,8 @@ import Activity from "../models/Activity";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import HoraireGrid from "../models/HoraireGrid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
 
 export default function Horaire() {
   const [bassin, setBassin] = useState([]);
@@ -56,7 +58,8 @@ export default function Horaire() {
       selectedTimeTo &&
       scheduleName &&
       selectedActivity &&
-      selectedBassin
+      selectedBassin &&
+      selectedDay
     ) {
       const overlappingItem = schedule.find(
         (item) =>
@@ -65,7 +68,8 @@ export default function Horaire() {
             (item.to >= selectedTimeFrom && item.to <= selectedTimeTo) ||
             (selectedTimeFrom >= item.from && selectedTimeFrom <= item.to) ||
             (selectedTimeTo >= item.from && selectedTimeTo <= item.to)) &&
-          item.bassin == selectedBassin
+          item.bassin == selectedBassin &&
+          item.day == selectedDay
       );
 
       if (overlappingItem) {
@@ -82,6 +86,7 @@ export default function Horaire() {
         activitePiscineId: selectedActivity,
         bassin: selectedBassin,
         longueur: selectedSections,
+        day: selectedDay,
       });
 
       console.log(newItem);
@@ -96,13 +101,14 @@ export default function Horaire() {
           setScheduleName("");
           setselectedActivity("");
           setSelectedBassin("");
+          setSelectedDay("");
         } else {
           toast.error("Error lors de la sauvegarde");
         }
       });
     } else {
       toast.error(
-        "Veuillez sélectionner des sections, des heures et un nom avant d'ajouter au planning."
+        "Veuillez remplir le formulaire avant d'ajouter au planning."
       );
     }
   };
@@ -129,6 +135,42 @@ export default function Horaire() {
 
   const handleActivityClick = (option) => {
     setselectedActivity(option);
+  };
+
+  //Days
+  //GRID
+  const days = [
+    "lundi",
+    "mardi",
+    "mercredi",
+    "jeudi",
+    "vendredi",
+    "samedi",
+    "dimanche",
+  ];
+
+  const [day, setDay] = useState(days[0]);
+  const [index, setIndex] = useState(0);
+
+  const handleNext = () => {
+    setIndex((prevIndex) => (prevIndex + 1) % days.length);
+    setDay(days[index]);
+  };
+
+  const handlePrev = () => {
+    setIndex((prevIndex) => (prevIndex - 1 + days.length) % days.length);
+    setDay(days[index]);
+  };
+
+  useEffect(() => {
+    setDay(days[index]);
+  }, [index]);
+
+  //FORM
+  const [selectedDay, setSelectedDay] = useState();
+
+  const handleDays = (option) => {
+    setSelectedDay(option);
   };
 
   return (
@@ -169,13 +211,29 @@ export default function Horaire() {
                 handleActivityClick={handleActivityClick}
                 activities={activities}
                 selectedActivity={selectedActivity}
+                days={days}
+                handleDays={handleDays}
+                selectedDay={selectedDay}
               />
             </div>
           </div>
         </div>
       </div>
       <div className="my-2">
-        <ScheduleGrid schedule={schedule} bassin={bassin} />
+        <ScheduleGrid
+          schedule={schedule}
+          bassin={bassin}
+          handleNext={handleNext}
+          handlePrev={handlePrev}
+          day={day}
+        />
+      </div>
+      <div>
+        <button className="btn btn-success btn-lg w-100 my-2">
+          <span className="mx-2">Télécharger</span>
+
+          <FontAwesomeIcon icon={faFileExcel} />
+        </button>
       </div>
       <ToastContainer />
     </div>

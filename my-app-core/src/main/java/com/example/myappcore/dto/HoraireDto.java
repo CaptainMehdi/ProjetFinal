@@ -1,6 +1,7 @@
 package com.example.myappcore.dto;
 
 import com.example.myappcore.utils.Bassin;
+import com.example.myappcore.utils.Jour;
 import lombok.Getter;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public class HoraireDto {
 
     @Getter
     private List<Integer> longueur;
+
+    @Getter
+    private Jour day;
 
     public void setId(Long id) {
         this.id = id;
@@ -54,16 +58,4 @@ public class HoraireDto {
         this.longueur = longueur;
     }
 
-    @Override
-    public String toString() {
-        return "HoraireDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", from='" + from + '\'' +
-                ", to='" + to + '\'' +
-                ", activitePiscineId=" + activitePiscineId +
-                ", bassin=" + bassin +
-                ", longueur_utilise=" + longueur +
-                '}';
-    }
 }

@@ -28,6 +28,7 @@ public class HoraireService {
             horaire.setActivitePiscine(activitePiscineService.getActivitiesById(horaireDto.getActivitePiscineId()));
             horaire.setBassin(horaireDto.getBassin());
             horaire.setLongueur(horaireDto.getLongueur());
+            horaire.setDay(horaireDto.getDay());
             horaireRepository.save(horaire);
             return horaireDto;
         }
