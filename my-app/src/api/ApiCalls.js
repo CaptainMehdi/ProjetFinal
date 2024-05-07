@@ -129,24 +129,17 @@ export const getEnumsValues = async () => {
   }
 };
 
-export const createFile = async (schedule) => {
+export const createHoraireExcel = async () => {
   try {
     const response = await fetch(
-      "http://localhost:8080/api/horaire/createSchedule",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(schedule),
-      }
+      "http://localhost:8080/api/horaire/create/file/excel"
     );
 
     if (!response.ok) {
-      throw new Error("Failed to register");
+      throw new Error("Failed to Create Excel File");
     }
     const data = await response.json();
-    console.log("Register successful:", data);
+    console.log("FichierDto received:", data);
     return data;
   } catch (error) {
     console.error("Error:", error.message);

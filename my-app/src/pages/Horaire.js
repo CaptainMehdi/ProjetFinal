@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import ScheduleGrid from "../components/ScheduleGrid";
 import ScheduleForm from "../components/ScheduleForm";
-import { getAllActivities, getEnumsValues, saveHoraire } from "../api/ApiCalls";
+import {
+  getAllActivities,
+  getEnumsValues,
+  saveHoraire,
+  createHoraireExcel,
+} from "../api/ApiCalls";
 import Activity from "../models/Activity";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -173,6 +178,14 @@ export default function Horaire() {
     setSelectedDay(option);
   };
 
+  //FILE EXCEL
+
+  const downloadExcelFile = async () => {
+    await createHoraireExcel().then((data) => {
+      console.log(data);
+    });
+  };
+
   return (
     <div className="container">
       <div className="accordion accordion-flush" id="accordionFlushExample">
@@ -229,9 +242,11 @@ export default function Horaire() {
         />
       </div>
       <div>
-        <button className="btn btn-success btn-lg w-100 my-2">
+        <button
+          className="btn btn-success btn-lg w-100 my-2"
+          onClick={downloadExcelFile}
+        >
           <span className="mx-2">Télécharger</span>
-
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
       </div>
