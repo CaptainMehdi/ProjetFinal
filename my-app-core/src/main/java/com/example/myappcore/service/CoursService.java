@@ -26,7 +26,6 @@ public class CoursService {
     public CoursDto saveCours(CoursDto coursDto) {
         if(coursDto != null){
             Cours cours = new Cours();
-            cours.setBassin(coursDto.getBassin());
             cours.setMaxEleves(coursDto.getMaxEleves());
             List<User> eleves = coursDto.getEleve() == null ? new ArrayList<>() :
                     coursDto.getEleve().stream().map(UserDto::toEntity).collect(Collectors.toList());
@@ -35,8 +34,8 @@ public class CoursService {
             User prof = coursDto.getProf() == null ? null : coursDto.getProf().toEntity();
             cours.setProf(prof);
 
-            cours.setRequis(coursDto.getRequis());
-            cours.setNom(coursDto.getNom());
+            cours.setNiveau(coursDto.getNiveau().toEntity());
+
             Cours savedCours = coursRepository.save(cours);
             return new CoursDto(savedCours);
         }

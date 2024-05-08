@@ -31,8 +31,8 @@ public class HoraireController {
         return new ResponseEntity<>(horaireService.getAllHoraire(), HttpStatus.CREATED);
     }
 
-    @PostMapping("/create/file/excel")
+    @GetMapping("/excel")
     public ResponseEntity<FichierDto> createFile() throws IOException {
-        return new ResponseEntity<>(horaireService.createHoraireExcel(), HttpStatus.CREATED);
+        return new ResponseEntity<>(horaireService.getFileExcelHoraire(), HttpStatus.CREATED);
     }
 }

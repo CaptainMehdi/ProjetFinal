@@ -3,12 +3,15 @@ package com.example.myappcore.service;
 import com.example.myappcore.dto.ActivitePiscineDto;
 import com.example.myappcore.dto.BainsLibreDto;
 import com.example.myappcore.dto.CoursDto;
+import com.example.myappcore.dto.NiveauDto;
 import com.example.myappcore.model.ActivitePiscine;
 import com.example.myappcore.model.BainsLibre;
 import com.example.myappcore.model.Cours;
+import com.example.myappcore.model.Niveau;
 import com.example.myappcore.repository.ActivitePiscineRepository;
 import com.example.myappcore.repository.BainsLibreRepository;
 import com.example.myappcore.repository.CoursRepository;
+import com.example.myappcore.repository.NiveauRepository;
 import com.example.myappcore.utils.Bassin;
 import org.springframework.stereotype.Service;
 
@@ -22,20 +25,20 @@ public class ActivitePiscineService {
 
     private ActivitePiscineRepository activitePiscineRepository;
     private BainsLibreRepository bainsLibreRepository;
-    private CoursRepository coursRepository;
+    private NiveauRepository niveauRepository;
 
-    public ActivitePiscineService(ActivitePiscineRepository activitePiscineRepository, BainsLibreRepository bainsLibreRepository, CoursRepository coursRepository) {
+    public ActivitePiscineService(ActivitePiscineRepository activitePiscineRepository, BainsLibreRepository bainsLibreRepository, NiveauRepository niveauRepository) {
         this.activitePiscineRepository = activitePiscineRepository;
         this.bainsLibreRepository = bainsLibreRepository;
-        this.coursRepository = coursRepository;
+        this.niveauRepository = niveauRepository;
     }
 
     public List<ActivitePiscineDto> getAllActivities() {
-        List<Cours> coursList = coursRepository.findAll();
+        List<Niveau> niveauList = niveauRepository.findAll();
         List<BainsLibre> bainsLibreList = bainsLibreRepository.findAll();
 
-        List<ActivitePiscineDto> allActivities = coursList.stream()
-                .map(CoursDto::new)
+        List<ActivitePiscineDto> allActivities = niveauList.stream()
+                .map(NiveauDto::new)
                 .collect(Collectors.toList());
 
         allActivities.addAll(bainsLibreList.stream()

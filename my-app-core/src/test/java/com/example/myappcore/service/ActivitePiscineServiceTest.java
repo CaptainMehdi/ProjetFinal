@@ -8,6 +8,7 @@ import com.example.myappcore.model.ActivitePiscine;
 import com.example.myappcore.repository.ActivitePiscineRepository;
 import com.example.myappcore.repository.BainsLibreRepository;
 import com.example.myappcore.repository.CoursRepository;
+import com.example.myappcore.repository.NiveauRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +19,7 @@ class ActivitePiscineServiceTest {
 
     private ActivitePiscineRepository activitePiscineRepository;
     private BainsLibreRepository bainsLibreRepository;
-    private CoursRepository coursRepository;
+    private NiveauRepository niveauRepository;
 
     private ActivitePiscineService activitePiscineService;
 
@@ -26,19 +27,19 @@ class ActivitePiscineServiceTest {
     void setUp() {
         activitePiscineRepository = mock(ActivitePiscineRepository.class);
         bainsLibreRepository = mock(BainsLibreRepository.class);
-        coursRepository = mock(CoursRepository.class);
+        niveauRepository = mock(NiveauRepository.class);
 
         activitePiscineService = new ActivitePiscineService(
                 activitePiscineRepository,
                 bainsLibreRepository,
-                coursRepository
+                niveauRepository
         );
     }
 
     @Test
     void getAllActivities_ReturnsCombinedList_WhenRepositoriesHaveData() {
         List<ActivitePiscineDto> expectedActivities = new ArrayList<>();
-        when(coursRepository.findAll()).thenReturn(new ArrayList<>());
+        when(niveauRepository.findAll()).thenReturn(new ArrayList<>());
         when(bainsLibreRepository.findAll()).thenReturn(new ArrayList<>());
 
         List<ActivitePiscineDto> actualActivities = activitePiscineService.getAllActivities();
@@ -48,7 +49,7 @@ class ActivitePiscineServiceTest {
 
     @Test
     void getAllActivities_ReturnsEmptyList_WhenRepositoriesAreEmpty() {
-        when(coursRepository.findAll()).thenReturn(new ArrayList<>());
+        when(niveauRepository.findAll()).thenReturn(new ArrayList<>());
         when(bainsLibreRepository.findAll()).thenReturn(new ArrayList<>());
 
         List<ActivitePiscineDto> actualActivities = activitePiscineService.getAllActivities();

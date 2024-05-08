@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "Cours")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cours extends ActivitePiscine {
+public class Cours{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,16 +29,13 @@ public class Cours extends ActivitePiscine {
     @ManyToOne(cascade = CascadeType.ALL)
     private User prof;
 
-    private String requis;
+    @ManyToOne
+    private Niveau niveau;
 
-    private String nom;
-
-    public Cours(Bassin bassin, int maxEleves, List<User> eleve, User prof, String requis, String nom) {
-        super(bassin);
+    public Cours(int maxEleves, List<User> eleve, User prof, Niveau niveau) {
         this.maxEleves = maxEleves;
         this.eleve = eleve;
         this.prof = prof;
-        this.requis = requis;
-        this.nom = nom;
+        this.niveau = niveau;
     }
 }

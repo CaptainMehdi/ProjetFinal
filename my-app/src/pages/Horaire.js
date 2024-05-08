@@ -5,7 +5,8 @@ import {
   getAllActivities,
   getEnumsValues,
   saveHoraire,
-  createHoraireExcel,
+  getFileExcelHoraire,
+  getAllHoraire,
 } from "../api/ApiCalls";
 import Activity from "../models/Activity";
 import { ToastContainer, toast } from "react-toastify";
@@ -181,10 +182,46 @@ export default function Horaire() {
   //FILE EXCEL
 
   const downloadExcelFile = async () => {
-    await createHoraireExcel().then((data) => {
-      console.log(data);
-    });
+    try {
+      const data = await getFileExcelHoraire();
+
+      const binaryData = atob(data.data);
+
+      const arrayBuffer = new ArrayBuffer(binaryData.length);
+      const uint8Array = new Uint8Array(arrayBuffer);
+      for (let i = 0; i < binaryData.length; i++) {
+        uint8Array[i] = binaryData.charCodeAt(i);
+      }
+
+      const blob = new Blob([uint8Array], { type: "application/octet-stream" });
+
+      const blobUrl = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = data.nom;
+      document.body.appendChild(link);
+
+      link.click();
+
+      document.body.removeChild(link);
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      toast.error("Une erreur est survenue lors du telechargement Excel");
+      console.error("Error downloading Excel file:", error);
+    }
   };
+
+  //GetHoraire
+  useEffect(() => {
+    getAllHoraire()
+      .then((data) => {
+        console.log(data);
+        setSchedule(data);
+        console.log("coucou");
+      })
+      .catch((error) => console.error("Error fetching options:", error));
+  }, []);
 
   return (
     <div className="container">

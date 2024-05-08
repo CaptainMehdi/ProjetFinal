@@ -38,6 +38,8 @@ const ScheduleForm = ({
     }
     return options;
   };
+  const containsNageur =
+    selectedActivity && selectedActivity.includes("nageur");
 
   return (
     <>
@@ -132,15 +134,6 @@ const ScheduleForm = ({
             </select>
           </div>
           <div>
-            <label className="form-label">Nom</label>
-            <input
-              type="text"
-              className="form-control"
-              value={scheduleName}
-              onChange={(e) => setScheduleName(e.target.value)}
-            />
-          </div>
-          <div>
             <label>Choisir une activites:</label>
             <select
               className="form-select form-select-sm mb-3"
@@ -162,6 +155,17 @@ const ScheduleForm = ({
                   </option>
                 ))}
             </select>
+          </div>
+          <div>
+            <div>
+              <label className="form-label">Moniteur</label>
+              <input
+                type="text"
+                className="form-control"
+                value={scheduleName}
+                onChange={(e) => setScheduleName(e.target.value)}
+              />
+            </div>
           </div>
           <div>
             <button type="submit" className="btn btn-primary my-3">

@@ -1,7 +1,9 @@
 package com.example.myappcore.dto;
 
 import com.example.myappcore.model.Fichier;
+import lombok.Data;
 
+@Data
 public class FichierDto {
     Long id;
 
@@ -13,5 +15,8 @@ public class FichierDto {
         this.id = fichier.getId();
         this.data = fichier.getData();
         this.nom = fichier.getNom();
+    }
+
+    public FichierDto() {
     }
 }

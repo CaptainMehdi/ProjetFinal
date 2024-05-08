@@ -12,6 +12,4 @@ import java.util.Optional;
 @Repository
 public interface HoraireRepository extends JpaRepository<Horaire, Long> {
 
-    @Query("SELECT e FROM User e WHERE e.email = ?1")
-    Optional<List<Horaire>> getAllHoraire();
 }

@@ -81,7 +81,7 @@ export const getAllActivities = async () => {
 
 export const getAllHoraire = async () => {
   try {
-    const response = await fetch("http://localhost:8080/api/activity/all");
+    const response = await fetch("http://localhost:8080/api/horaire/all");
     if (!response.ok) {
       throw new Error("Failed to fetch activities");
     }
@@ -129,11 +129,9 @@ export const getEnumsValues = async () => {
   }
 };
 
-export const createHoraireExcel = async () => {
+export const getFileExcelHoraire = async () => {
   try {
-    const response = await fetch(
-      "http://localhost:8080/api/horaire/create/file/excel"
-    );
+    const response = await fetch("http://localhost:8080/api/horaire/excel");
 
     if (!response.ok) {
       throw new Error("Failed to Create Excel File");

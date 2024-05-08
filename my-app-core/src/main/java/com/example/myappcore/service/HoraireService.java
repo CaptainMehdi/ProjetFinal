@@ -45,11 +45,11 @@ public class HoraireService {
     }
 
     public List<HoraireDto> getAllHoraire(){
-        Optional<List<Horaire>> horairesOptional = horaireRepository.getAllHoraire();
+        List<Horaire> horaires = horaireRepository.findAll();
         List<HoraireDto> horaireDtos = new ArrayList<>();
 
-        if (horairesOptional.isPresent()) {
-            for (Horaire horaire : horairesOptional.get()) {
+        if(!horaires.isEmpty()) {
+            for (Horaire horaire : horaires) {
                 HoraireDto horaireDto = new HoraireDto();
                 horaireDto.setId(horaire.getId());
                 horaireDto.setName(horaire.getName());
@@ -65,7 +65,7 @@ public class HoraireService {
         return horaireDtos;
     }
 
-    public FichierDto createHoraireExcel() throws IOException {
+    public FichierDto getFileExcelHoraire() throws IOException {
         System.out.println("Creating File Excel...");
         List<Horaire> horaires = horaireRepository.findAll();
 
@@ -85,9 +85,10 @@ public class HoraireService {
 
             // Create header row
             Row headerRow = sheet.createRow(0);
-            headerRow.createCell(0).setCellValue("Name");
-            headerRow.createCell(1).setCellValue("From");
-            headerRow.createCell(2).setCellValue("To");
+            headerRow.createCell(0).setCellValue("Moniteur");
+            headerRow.createCell(1).setCellValue("De");
+            headerRow.createCell(2).setCellValue("A");
+
             // Add more headers as needed
 
             // Add horaires data
@@ -118,8 +119,8 @@ public class HoraireService {
         fichier.setData(excelBytes);
         fichier.setNom("YourExcelFileName.xlsx");
 
-//        // Save Fichier object to database
-//        fichierRepository.save(fichier);
+        // Save Fichier object to database
+        fichierRepository.save(fichier);
 
         return new FichierDto(fichier);
     }

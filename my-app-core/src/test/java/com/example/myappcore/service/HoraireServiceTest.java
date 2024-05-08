@@ -57,7 +57,6 @@ class HoraireServiceTest {
 
     @Test
     void getAllHoraire_ReturnsEmptyList_WhenRepositoryReturnsEmptyOptional() {
-        when(horaireRepository.getAllHoraire()).thenReturn(Optional.empty());
         List<HoraireDto> result = horaireService.getAllHoraire();
         assertNotNull(result);
         assertTrue(result.isEmpty());
