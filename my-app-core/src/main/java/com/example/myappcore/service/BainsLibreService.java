@@ -5,6 +5,7 @@ import com.example.myappcore.dto.CoursDto;
 import com.example.myappcore.model.BainsLibre;
 import com.example.myappcore.model.Cours;
 import com.example.myappcore.repository.BainsLibreRepository;
+import com.example.myappcore.utils.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ public class BainsLibreService {
             bainsLibre.setId(bainsLibreDto.getId());
             bainsLibre.setBassin(bainsLibreDto.getBassin());
             bainsLibre.setSauveteurs(null);
+            bainsLibre.setType(Type.bainslibres);
             BainsLibre savedBainsLibre = bainsLibreRepository.save(bainsLibre);
             return new BainsLibreDto(savedBainsLibre);
         }

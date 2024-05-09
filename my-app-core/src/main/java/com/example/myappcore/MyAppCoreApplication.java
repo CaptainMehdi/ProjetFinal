@@ -7,6 +7,7 @@ import com.example.myappcore.model.User;
 import com.example.myappcore.service.*;
 import com.example.myappcore.utils.Bassin;
 import com.example.myappcore.utils.Role;
+import com.example.myappcore.utils.Type;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -52,8 +53,8 @@ public class MyAppCoreApplication implements CommandLineRunner {
         niveauService.saveNiveau(new NiveauDto("Requis 5", "Nageur 5", Bassin.grand));
 
 // Save BainsLibre
-        bainsLibreService.saveBainsLibre(new BainsLibreDto(Bassin.petit, null));
-        bainsLibreService.saveBainsLibre(new BainsLibreDto(Bassin.grand, null));
+        bainsLibreService.saveBainsLibre(new BainsLibreDto(Bassin.petit, Type.bainslibres, null));
+        bainsLibreService.saveBainsLibre(new BainsLibreDto(Bassin.grand, Type.bainslibres, null));
 
 
         System.out.println("DONE");

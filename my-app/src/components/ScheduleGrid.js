@@ -81,7 +81,7 @@ const ScheduleGrid = ({ schedule, bassin, handleNext, handlePrev, day }) => {
                           <div key={sectionIndex} className="col p-0">
                             {matchingScheduleItems.map((item, idx) => (
                               <div key={idx} className="schedule-item">
-                                {item.name}
+                                {item.day}
                               </div>
                             ))}
                           </div>
@@ -115,7 +115,7 @@ const ScheduleGrid = ({ schedule, bassin, handleNext, handlePrev, day }) => {
                           <div key={sectionIndex} className="col p-0">
                             {matchingScheduleItems.map((item, idx) => (
                               <div key={idx} className="schedule-item">
-                                {item.name}
+                                {item.day}
                               </div>
                             ))}
                           </div>

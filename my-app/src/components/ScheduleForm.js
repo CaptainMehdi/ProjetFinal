@@ -19,6 +19,12 @@ const ScheduleForm = ({
   days,
   handleDays,
   selectedDay,
+  selectedTeacher,
+  handleTeacherClick,
+  teachers,
+  selectedNiveau,
+  handleNiveauClick,
+  niveaux,
 }) => {
   const generateTimeOptions = (minHour, minMinute) => {
     const options = [];
@@ -38,8 +44,6 @@ const ScheduleForm = ({
     }
     return options;
   };
-  const containsNageur =
-    selectedActivity && selectedActivity.includes("nageur");
 
   return (
     <>
@@ -103,36 +107,39 @@ const ScheduleForm = ({
               )
             )}
           </div>
-          <div>
-            <label>De</label>
-            <select
-              className="form-select form-select-sm mb-3"
-              aria-label=".form-select-lg example"
-              value={selectedTimeFrom}
-              onChange={(e) => {
-                setSelectedTimeFrom(e.target.value);
-                if (selectedTimeTo < e.target.value) {
-                  setSelectedTimeTo(e.target.value);
-                }
-              }}
-            >
-              {generateTimeOptions(7, 0)}
-            </select>
+          <div className="row">
+            <div className="col">
+              <label>De</label>
+              <select
+                className="form-select form-select-sm mb-3"
+                aria-label=".form-select-lg example"
+                value={selectedTimeFrom}
+                onChange={(e) => {
+                  setSelectedTimeFrom(e.target.value);
+                  if (selectedTimeTo < e.target.value) {
+                    setSelectedTimeTo(e.target.value);
+                  }
+                }}
+              >
+                {generateTimeOptions(7, 0)}
+              </select>
+            </div>
+            <div className="col">
+              <label>À</label>
+              <select
+                className="form-select form-select-sm mb-3"
+                aria-label=".form-select-lg example"
+                value={selectedTimeTo}
+                onChange={(e) => setSelectedTimeTo(e.target.value)}
+              >
+                {generateTimeOptions(
+                  parseInt(selectedTimeFrom.split(":")[0]),
+                  parseInt(selectedTimeFrom.split(":")[1]) + 15
+                )}
+              </select>
+            </div>
           </div>
-          <div>
-            <label>À</label>
-            <select
-              className="form-select form-select-sm mb-3"
-              aria-label=".form-select-lg example"
-              value={selectedTimeTo}
-              onChange={(e) => setSelectedTimeTo(e.target.value)}
-            >
-              {generateTimeOptions(
-                parseInt(selectedTimeFrom.split(":")[0]),
-                parseInt(selectedTimeFrom.split(":")[1]) + 15
-              )}
-            </select>
-          </div>
+
           <div>
             <label>Choisir une activites:</label>
             <select
@@ -140,33 +147,69 @@ const ScheduleForm = ({
               aria-label=".form-select-lg example"
               value={selectedActivity || ""}
               onChange={(e) => {
-                const selectedActivity = JSON.parse(e.target.value);
-                handleActivityClick(selectedActivity);
+                handleActivityClick(e.target.value);
               }}
             >
               <option value="" disabled>
                 Select Activity
               </option>
-              {activities
-                .filter((activity) => activity.bassin === selectedBassin)
-                .map((activity, index) => (
-                  <option key={index} value={activity.id}>
-                    {activity.nom} ({activity.bassin})
-                  </option>
-                ))}
+              {activities.map((activity, index) => (
+                <option key={index} value={activity.id}>
+                  {activity}
+                </option>
+              ))}
             </select>
           </div>
-          <div>
+
+          {selectedActivity === "cours" && (
             <div>
-              <label className="form-label">Moniteur</label>
-              <input
-                type="text"
-                className="form-control"
-                value={scheduleName}
-                onChange={(e) => setScheduleName(e.target.value)}
-              />
+              <div>
+                <label className="form-label">Moniteur</label>
+                <select
+                  className="form-select form-select-sm mb-3"
+                  aria-label=".form-select-lg example"
+                  value={selectedTeacher ? JSON.stringify(selectedTeacher) : ""}
+                  onChange={(e) => {
+                    const selectedTeacher = JSON.parse(e.target.value);
+                    console.log(selectedTeacher);
+                    handleTeacherClick(selectedTeacher);
+                  }}
+                >
+                  <option value="" disabled>
+                    Select Teacher
+                  </option>
+                  {teachers.map((teacher, index) => (
+                    <option key={index} value={JSON.stringify(teacher)}>
+                      {teacher.lastname}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="form-label">Niveau</label>
+                <select
+                  className="form-select form-select-sm mb-3"
+                  aria-label=".form-select-lg example"
+                  value={selectedNiveau ? JSON.stringify(selectedNiveau) : ""}
+                  onChange={(e) => {
+                    const selectedNiveau = JSON.parse(e.target.value);
+                    console.log(selectedNiveau);
+                    handleNiveauClick(selectedNiveau);
+                  }}
+                >
+                  <option value="" disabled>
+                    Select Niveau
+                  </option>
+                  {niveaux.map((niveau, index) => (
+                    <option key={index} value={JSON.stringify(niveau)}>
+                      {niveau.nom} ({niveau.bassin})
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-          </div>
+          )}
+
           <div>
             <button type="submit" className="btn btn-primary my-3">
               Ajouter

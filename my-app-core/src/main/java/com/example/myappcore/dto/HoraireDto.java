@@ -14,9 +14,6 @@ public class HoraireDto {
     private Long id;
 
     @Getter @Setter
-    private String name;
-
-    @Getter @Setter
     private String from;
 
     @Getter @Setter
@@ -39,7 +36,6 @@ public class HoraireDto {
 
     public HoraireDto(Horaire horaire) {
         this.id = horaire.getId();
-        this.name = horaire.getName();
         this.from = horaire.getFrom();
         this.to = horaire.getTo();
         this.activitePiscineId = horaire.getActivitePiscine().getId();

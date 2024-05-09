@@ -12,7 +12,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class NiveauDto extends ActivitePiscineDto{
+public class NiveauDto{
     private Long id;
     private String requis;
     private String nom;

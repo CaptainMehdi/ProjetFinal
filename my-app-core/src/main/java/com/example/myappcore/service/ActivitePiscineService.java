@@ -25,20 +25,20 @@ public class ActivitePiscineService {
 
     private ActivitePiscineRepository activitePiscineRepository;
     private BainsLibreRepository bainsLibreRepository;
-    private NiveauRepository niveauRepository;
+    private CoursRepository coursRepository;
 
-    public ActivitePiscineService(ActivitePiscineRepository activitePiscineRepository, BainsLibreRepository bainsLibreRepository, NiveauRepository niveauRepository) {
+    public ActivitePiscineService(ActivitePiscineRepository activitePiscineRepository, BainsLibreRepository bainsLibreRepository, CoursRepository coursRepository) {
         this.activitePiscineRepository = activitePiscineRepository;
         this.bainsLibreRepository = bainsLibreRepository;
-        this.niveauRepository = niveauRepository;
+        this.coursRepository = coursRepository;
     }
 
     public List<ActivitePiscineDto> getAllActivities() {
-        List<Niveau> niveauList = niveauRepository.findAll();
+        List<Cours> coursDtos = coursRepository.findAll();
         List<BainsLibre> bainsLibreList = bainsLibreRepository.findAll();
 
-        List<ActivitePiscineDto> allActivities = niveauList.stream()
-                .map(NiveauDto::new)
+        List<ActivitePiscineDto> allActivities = coursDtos.stream()
+                .map(CoursDto::new)
                 .collect(Collectors.toList());
 
         allActivities.addAll(bainsLibreList.stream()

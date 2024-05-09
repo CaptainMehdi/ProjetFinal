@@ -2,6 +2,7 @@ package com.example.myappcore.dto;
 
 import com.example.myappcore.model.BainsLibre;
 import com.example.myappcore.utils.Bassin;
+import com.example.myappcore.utils.Type;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -17,18 +18,19 @@ public class BainsLibreDto extends ActivitePiscineDto{
     private String nom;
 
     public BainsLibreDto(BainsLibre bainsLibre) {
-        this.id = bainsLibre.getId();
-        this.bassin = bainsLibre.getBassin();
+        super(bainsLibre.getId(),bainsLibre.getBassin(),bainsLibre.getType());
         this.sauveteurs = bainsLibre.getSauveteurs() == null ? new  ArrayList<>() : bainsLibre.getSauveteurs().stream()
                 .map(UserDto::new)
                 .collect(Collectors.toList());
         this.nom = "Bains Libres";
     }
 
-    public BainsLibreDto(Bassin bassin, List<UserDto> sauveteurs) {
-        this.bassin = bassin;
+    public BainsLibreDto(Bassin bassin, Type type, List<UserDto> sauveteurs) {
+        super(bassin,type);
         this.sauveteurs = sauveteurs;
         this.nom = "Bains Libres";
     }
+
+
 
 }

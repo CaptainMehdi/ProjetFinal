@@ -3,10 +3,14 @@ import ScheduleGrid from "../components/ScheduleGrid";
 import ScheduleForm from "../components/ScheduleForm";
 import {
   getAllActivities,
-  getEnumsValues,
+  getBassinEnums,
+  getTypeEnums,
   saveHoraire,
   getFileExcelHoraire,
   getAllHoraire,
+  getAllProf,
+  getAllNiveaux,
+  saveCours,
 } from "../api/ApiCalls";
 import Activity from "../models/Activity";
 import { ToastContainer, toast } from "react-toastify";
@@ -22,7 +26,6 @@ export default function Horaire() {
   const [selectedTimeFrom, setSelectedTimeFrom] = useState("");
   const [selectedTimeTo, setSelectedTimeTo] = useState("");
   const [schedule, setSchedule] = useState([]);
-  const [scheduleName, setScheduleName] = useState("");
   const [activities, setActivities] = useState([]);
   const [selectedActivity, setselectedActivity] = useState();
 
@@ -42,7 +45,7 @@ export default function Horaire() {
   }, []);
 
   const fetchEnumsBassin = async () => {
-    return getEnumsValues();
+    return getBassinEnums();
   };
 
   //SECTION
@@ -58,14 +61,15 @@ export default function Horaire() {
   //HORAIRE AJOUT
   const handleAddScheduleItem = async (event) => {
     event.preventDefault();
+
     if (
       selectedSections.length > 0 &&
       selectedTimeFrom &&
       selectedTimeTo &&
-      scheduleName &&
       selectedActivity &&
       selectedBassin &&
-      selectedDay
+      selectedDay &&
+      selectedTimeFrom != selectedTimeTo
     ) {
       const overlappingItem = schedule.find(
         (item) =>
@@ -85,33 +89,36 @@ export default function Horaire() {
         return;
       }
 
-      const newItem = new HoraireGrid({
-        name: scheduleName,
-        from: selectedTimeFrom,
-        to: selectedTimeTo,
-        activitePiscineId: selectedActivity,
-        bassin: selectedBassin,
-        longueur: selectedSections,
-        day: selectedDay,
-      });
+      if (selectedActivity === "cours") {
+        const cours = { prof: selectedTeacher, niveau: selectedNiveau };
+        const id = await saveCours(cours);
 
-      console.log(newItem);
+        const newItem = new HoraireGrid({
+          from: selectedTimeFrom,
+          to: selectedTimeTo,
+          activitePiscineId: id,
+          bassin: selectedBassin,
+          longueur: selectedSections,
+          day: selectedDay,
+        });
 
-      await saveHoraire(newItem).then((data) => {
-        if (data) {
-          toast.success("Successfully added ✓");
-          setSchedule([...schedule, newItem]);
-          setSelectedSections([]);
-          setSelectedTimeFrom("");
-          setSelectedTimeTo("");
-          setScheduleName("");
-          setselectedActivity("");
-          setSelectedBassin("");
-          setSelectedDay("");
-        } else {
-          toast.error("Error lors de la sauvegarde");
-        }
-      });
+        await saveHoraire(newItem).then((data) => {
+          if (data) {
+            toast.success("Successfully added ✓");
+            setSchedule([...schedule, newItem]);
+            setSelectedSections([]);
+            setSelectedTimeFrom("");
+            setSelectedTimeTo("");
+            setselectedActivity("");
+            setSelectedBassin("");
+            setSelectedDay("");
+            setSelectedTeacher("");
+            setSelectedNiveau("");
+          } else {
+            toast.error("Error lors de la sauvegarde");
+          }
+        });
+      }
     } else {
       toast.error(
         "Veuillez remplir le formulaire avant d'ajouter au planning."
@@ -120,24 +127,15 @@ export default function Horaire() {
   };
 
   // ACTIVITIES
+
   useEffect(() => {
-    fetchActivitiesFromMethod()
+    getTypeEnums()
       .then((data) => {
-        const activityList = createActivityList(data);
-        setActivities(activityList);
+        console.log(data);
+        setActivities(data);
       })
       .catch((error) => console.error("Error fetching options:", error));
   }, []);
-
-  const createActivityList = (data) => {
-    return data.map((item) => {
-      return new Activity(item.id, item.nom, item.bassin);
-    });
-  };
-
-  const fetchActivitiesFromMethod = async () => {
-    return getAllActivities();
-  };
 
   const handleActivityClick = (option) => {
     setselectedActivity(option);
@@ -212,13 +210,48 @@ export default function Horaire() {
     }
   };
 
+  //TEACHER
+  const [selectedTeacher, setSelectedTeacher] = useState("");
+  const [teachers, setTeachers] = useState([]);
+
+  const handleTeacherClick = (option) => {
+    setSelectedTeacher(option);
+  };
+
+  useEffect(() => {
+    getAllProf()
+      .then((data) => {
+        console.log(data);
+        setTeachers(data);
+      })
+      .catch((error) => console.error("Error fetching options:", error));
+  }, []);
+
+  //NIVEAU
+  const [selectedNiveau, setSelectedNiveau] = useState("");
+  const [niveaux, setNiveaux] = useState([]);
+
+  const handleNiveauClick = (option) => {
+    setSelectedNiveau(option);
+  };
+
+  useEffect(() => {
+    if (selectedBassin) {
+      getAllNiveaux(selectedBassin)
+        .then((data) => {
+          console.log(data);
+          setNiveaux(data);
+        })
+        .catch((error) => console.error("Error fetching options:", error));
+    }
+  }, [selectedBassin]);
+
   //GetHoraire
   useEffect(() => {
     getAllHoraire()
       .then((data) => {
         console.log(data);
         setSchedule(data);
-        console.log("coucou");
       })
       .catch((error) => console.error("Error fetching options:", error));
   }, []);
@@ -236,7 +269,7 @@ export default function Horaire() {
               aria-expanded="false"
               aria-controls="flush-collapseForm"
             >
-              Ajout Cours
+              Ajout Activitees
             </button>
           </h2>
           <div
@@ -251,19 +284,23 @@ export default function Horaire() {
                 selectedSections={selectedSections}
                 selectedTimeFrom={selectedTimeFrom}
                 selectedTimeTo={selectedTimeTo}
-                scheduleName={scheduleName}
                 handleBassinChange={handleBassinChange}
                 handleSectionToggle={handleSectionToggle}
                 handleAddScheduleItem={handleAddScheduleItem}
                 setSelectedTimeFrom={setSelectedTimeFrom}
                 setSelectedTimeTo={setSelectedTimeTo}
-                setScheduleName={setScheduleName}
                 handleActivityClick={handleActivityClick}
                 activities={activities}
                 selectedActivity={selectedActivity}
                 days={days}
                 handleDays={handleDays}
                 selectedDay={selectedDay}
+                selectedTeacher={selectedTeacher}
+                handleTeacherClick={handleTeacherClick}
+                teachers={teachers}
+                selectedNiveau={selectedNiveau}
+                handleNiveauClick={handleNiveauClick}
+                niveaux={niveaux}
               />
             </div>
           </div>

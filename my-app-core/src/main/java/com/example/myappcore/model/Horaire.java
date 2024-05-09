@@ -22,8 +22,6 @@ public class Horaire {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
     @Column(name = "\"from\"")
     private String from;
 

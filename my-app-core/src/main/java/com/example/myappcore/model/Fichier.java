@@ -18,5 +18,4 @@ public class Fichier {
     byte[] data;
 
     String nom;
-
 }

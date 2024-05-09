@@ -2,6 +2,7 @@ package com.example.myappcore.model;
 
 import com.example.myappcore.utils.Bassin;
 import com.example.myappcore.utils.Jour;
+import com.example.myappcore.utils.Type;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.util.List;
 @Table(name = "Cours")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cours{
+public class Cours extends ActivitePiscine{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +33,8 @@ public class Cours{
     @ManyToOne
     private Niveau niveau;
 
-    public Cours(int maxEleves, List<User> eleve, User prof, Niveau niveau) {
+    public Cours(Bassin bassin, Type type, int maxEleves, List<User> eleve, User prof, Niveau niveau) {
+        super(bassin, type);
         this.maxEleves = maxEleves;
         this.eleve = eleve;
         this.prof = prof;

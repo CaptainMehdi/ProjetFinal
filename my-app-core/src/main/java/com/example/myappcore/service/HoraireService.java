@@ -33,7 +33,6 @@ public class HoraireService {
             Horaire horaire = new Horaire();
             horaire.setTo(horaireDto.getTo());
             horaire.setFrom(horaireDto.getFrom());
-            horaire.setName(horaireDto.getName());
             horaire.setActivitePiscine(activitePiscineService.getActivitiesById(horaireDto.getActivitePiscineId()));
             horaire.setBassin(horaireDto.getBassin());
             horaire.setLongueur(horaireDto.getLongueur());
@@ -52,12 +51,12 @@ public class HoraireService {
             for (Horaire horaire : horaires) {
                 HoraireDto horaireDto = new HoraireDto();
                 horaireDto.setId(horaire.getId());
-                horaireDto.setName(horaire.getName());
                 horaireDto.setFrom(horaire.getFrom());
                 horaireDto.setTo(horaire.getTo());
                 horaireDto.setActivitePiscineId(horaire.getActivitePiscine().getId());
                 horaireDto.setBassin(horaire.getBassin());
                 horaireDto.setLongueur(horaire.getLongueur());
+                horaireDto.setDay(horaire.getDay());
                 horaireDtos.add(horaireDto);
             }
         }
@@ -95,9 +94,8 @@ public class HoraireService {
             int rowNum = 1;
             for (HoraireDto horaire : horairesForDay) {
                 Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(horaire.getName());
-                row.createCell(1).setCellValue(horaire.getFrom());
-                row.createCell(2).setCellValue(horaire.getTo());
+                row.createCell(0).setCellValue(horaire.getFrom());
+                row.createCell(1).setCellValue(horaire.getTo());
                 // Add more cell values as needed
             }
 

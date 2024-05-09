@@ -1,6 +1,7 @@
 package com.example.myappcore.model;
 
 import com.example.myappcore.utils.Bassin;
+import com.example.myappcore.utils.Type;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,8 +23,8 @@ public class BainsLibre extends ActivitePiscine {
     @ManyToMany(cascade = CascadeType.ALL)
     private List<User> sauveteurs;
 
-    public BainsLibre(Bassin bassin, List<User> sauveteurs) {
-        super(bassin);
+    public BainsLibre(Bassin bassin, Type type, List<User> sauveteurs) {
+        super(bassin, type);
         this.sauveteurs = sauveteurs;
     }
 }

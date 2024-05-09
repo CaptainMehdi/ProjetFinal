@@ -19,7 +19,7 @@ class ActivitePiscineServiceTest {
 
     private ActivitePiscineRepository activitePiscineRepository;
     private BainsLibreRepository bainsLibreRepository;
-    private NiveauRepository niveauRepository;
+    private CoursRepository coursRepository;
 
     private ActivitePiscineService activitePiscineService;
 
@@ -27,19 +27,20 @@ class ActivitePiscineServiceTest {
     void setUp() {
         activitePiscineRepository = mock(ActivitePiscineRepository.class);
         bainsLibreRepository = mock(BainsLibreRepository.class);
-        niveauRepository = mock(NiveauRepository.class);
+        coursRepository = mock(CoursRepository.class);
 
         activitePiscineService = new ActivitePiscineService(
                 activitePiscineRepository,
                 bainsLibreRepository,
-                niveauRepository
+                coursRepository
+
         );
     }
 
     @Test
     void getAllActivities_ReturnsCombinedList_WhenRepositoriesHaveData() {
         List<ActivitePiscineDto> expectedActivities = new ArrayList<>();
-        when(niveauRepository.findAll()).thenReturn(new ArrayList<>());
+        when(coursRepository.findAll()).thenReturn(new ArrayList<>());
         when(bainsLibreRepository.findAll()).thenReturn(new ArrayList<>());
 
         List<ActivitePiscineDto> actualActivities = activitePiscineService.getAllActivities();
@@ -49,7 +50,7 @@ class ActivitePiscineServiceTest {
 
     @Test
     void getAllActivities_ReturnsEmptyList_WhenRepositoriesAreEmpty() {
-        when(niveauRepository.findAll()).thenReturn(new ArrayList<>());
+        when(coursRepository.findAll()).thenReturn(new ArrayList<>());
         when(bainsLibreRepository.findAll()).thenReturn(new ArrayList<>());
 
         List<ActivitePiscineDto> actualActivities = activitePiscineService.getAllActivities();

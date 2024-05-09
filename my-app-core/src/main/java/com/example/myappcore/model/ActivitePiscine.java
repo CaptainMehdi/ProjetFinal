@@ -2,6 +2,7 @@ package com.example.myappcore.model;
 
 import com.example.myappcore.utils.Bassin;
 import com.example.myappcore.utils.Jour;
+import com.example.myappcore.utils.Type;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,11 +25,15 @@ public class ActivitePiscine {
     @Enumerated(EnumType.STRING)
     private Bassin bassin;
 
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
     public ActivitePiscine() {
     }
 
-    public ActivitePiscine(Bassin bassin) {
+    public ActivitePiscine(Bassin bassin, Type type) {
         this.bassin = bassin;
+        this.type = type;
     }
 }
 

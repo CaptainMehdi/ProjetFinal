@@ -11,15 +11,16 @@ import lombok.NoArgsConstructor;
 @Table(name = "Niveau")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Niveau extends ActivitePiscine{
+public class Niveau{
     @Id
     @GeneratedValue
     private Long id;
     private String requis;
     private String nom;
+    private Bassin bassin;
 
     public Niveau(String requis, String nom, Bassin bassin) {
-        super(bassin);
+        this.bassin = bassin;
         this.requis = requis;
         this.nom = nom;
     }

@@ -23,7 +23,12 @@ public class UserController {
     }
 
     @GetMapping("/getUser/{id}")
-    public ResponseEntity<UserDto> getEnumValues(@PathVariable Long id) {
+    public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/teachers")
+    public ResponseEntity<List<UserDto>> getAllProf() {
+        return new ResponseEntity<>(userService.getAllTeachers(), HttpStatus.OK);
     }
 }

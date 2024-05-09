@@ -38,7 +38,6 @@ class HoraireServiceTest {
     @Test
     void save_ReturnsHoraireDto_WhenHoraireDtoIsNotNull() {
         HoraireDto inputDto = new HoraireDto();
-        inputDto.setName("Test Horaire");
         inputDto.setFrom("09:00");
         inputDto.setTo("11:00");
         inputDto.setActivitePiscineId(1L);
@@ -49,7 +48,6 @@ class HoraireServiceTest {
         HoraireDto resultDto = horaireService.save(inputDto);
 
         assertNotNull(resultDto);
-        assertEquals(inputDto.getName(), resultDto.getName());
         assertEquals(inputDto.getFrom(), resultDto.getFrom());
         assertEquals(inputDto.getTo(), resultDto.getTo());
         assertEquals(inputDto.getActivitePiscineId(), resultDto.getActivitePiscineId());

@@ -1,10 +1,15 @@
 package com.example.myappcore.service;
 
+import com.example.myappcore.dto.CoursAjoutDto;
 import com.example.myappcore.dto.CoursDto;
 import com.example.myappcore.dto.UserDto;
 import com.example.myappcore.model.Cours;
+import com.example.myappcore.model.Niveau;
 import com.example.myappcore.model.User;
 import com.example.myappcore.repository.CoursRepository;
+import com.example.myappcore.repository.NiveauRepository;
+import com.example.myappcore.repository.UserRepository;
+import com.example.myappcore.utils.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,29 +22,31 @@ import java.util.stream.Collectors;
 public class CoursService {
 
     private final CoursRepository coursRepository;
+    private final NiveauRepository niveauRepository;
 
-    @Autowired
-    public CoursService(CoursRepository coursRepository) {
+    private final UserRepository userRepository;
+
+    public CoursService(CoursRepository coursRepository, NiveauRepository niveauRepository, UserRepository userRepository) {
         this.coursRepository = coursRepository;
+        this.niveauRepository = niveauRepository;
+        this.userRepository = userRepository;
     }
 
-    public CoursDto saveCours(CoursDto coursDto) {
+    public Long saveCours(CoursAjoutDto coursDto) {
         if(coursDto != null){
             Cours cours = new Cours();
-            cours.setMaxEleves(coursDto.getMaxEleves());
-            List<User> eleves = coursDto.getEleve() == null ? new ArrayList<>() :
-                    coursDto.getEleve().stream().map(UserDto::toEntity).collect(Collectors.toList());
-            cours.setEleve(eleves);
+            Optional<Niveau> existingNiveauOptional = niveauRepository.findById(coursDto.getNiveau().getId());
+            cours.setNiveau(existingNiveauOptional.isPresent()?existingNiveauOptional.get():null);
 
-            User prof = coursDto.getProf() == null ? null : coursDto.getProf().toEntity();
-            cours.setProf(prof);
+            Optional<User> existingUserOptional = userRepository.findById(coursDto.getProf().getId());
+            cours.setProf(existingUserOptional.isPresent()?existingUserOptional.get():null);
 
-            cours.setNiveau(coursDto.getNiveau().toEntity());
-
+            cours.setType(Type.cours);
             Cours savedCours = coursRepository.save(cours);
-            return new CoursDto(savedCours);
+
+            return savedCours.getId();
         }
-        return null;
+        throw new RuntimeException();
     }
 
     public Optional<CoursDto> getCoursById(Long id) {
