@@ -6,13 +6,11 @@ const ScheduleForm = ({
   selectedSections,
   selectedTimeFrom,
   selectedTimeTo,
-  scheduleName,
   handleBassinChange,
   handleAddScheduleItem,
   handleSectionToggle,
   setSelectedTimeFrom,
   setSelectedTimeTo,
-  setScheduleName,
   handleActivityClick,
   activities,
   selectedActivity,
@@ -176,7 +174,7 @@ const ScheduleForm = ({
                   }}
                 >
                   <option value="" disabled>
-                    Select Teacher
+                    Selectionner un professeur
                   </option>
                   {teachers.map((teacher, index) => (
                     <option key={index} value={JSON.stringify(teacher)}>
@@ -198,7 +196,7 @@ const ScheduleForm = ({
                   }}
                 >
                   <option value="" disabled>
-                    Select Niveau
+                    Selectionner un niveau
                   </option>
                   {niveaux.map((niveau, index) => (
                     <option key={index} value={JSON.stringify(niveau)}>

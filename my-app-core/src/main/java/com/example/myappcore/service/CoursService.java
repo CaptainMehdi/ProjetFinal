@@ -2,6 +2,7 @@ package com.example.myappcore.service;
 
 import com.example.myappcore.dto.CoursAjoutDto;
 import com.example.myappcore.dto.CoursDto;
+import com.example.myappcore.dto.NiveauDto;
 import com.example.myappcore.dto.UserDto;
 import com.example.myappcore.model.Cours;
 import com.example.myappcore.model.Niveau;
@@ -42,6 +43,7 @@ public class CoursService {
             cours.setProf(existingUserOptional.isPresent()?existingUserOptional.get():null);
 
             cours.setType(Type.cours);
+            cours.setNom(existingNiveauOptional.get().getNom());
             Cours savedCours = coursRepository.save(cours);
 
             return savedCours.getId();
@@ -49,8 +51,25 @@ public class CoursService {
         throw new RuntimeException();
     }
 
-    public Optional<CoursDto> getCoursById(Long id) {
+    public CoursDto getCoursById(Long id) {
         Optional<Cours> coursOptional = coursRepository.findById(id);
-        return coursOptional.map(CoursDto::new);
+        CoursDto coursDto = new CoursDto();
+        if(coursOptional.isPresent()){
+            Cours cours = coursOptional.get();
+            coursDto.setId(cours.getId());
+            coursDto.setMaxEleves(cours.getMaxEleves());
+
+            Optional<User> professorOptional = userRepository.findById(cours.getProf().getId());
+            coursDto.setProf(professorOptional.map(UserDto::new).orElse(null));
+
+
+            Optional<Niveau> niveauOptional = niveauRepository.findById(cours.getNiveau().getId());
+            coursDto.setNiveau(niveauOptional.map(NiveauDto::new).orElse(null));
+
+            coursDto.setBassin(cours.getBassin());
+
+        }
+
+        return coursDto;
     }
 }

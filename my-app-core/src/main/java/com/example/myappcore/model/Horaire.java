@@ -41,4 +41,6 @@ public class Horaire {
 
     private Jour day;
 
+    private String nom;
+
 }

@@ -11,6 +11,7 @@ import {
   getAllProf,
   getAllNiveaux,
   saveCours,
+  getBainsLibreId,
 } from "../api/ApiCalls";
 import Activity from "../models/Activity";
 import { ToastContainer, toast } from "react-toastify";
@@ -18,8 +19,9 @@ import "react-toastify/dist/ReactToastify.css";
 import HoraireGrid from "../models/HoraireGrid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
+import InscriptionCours from "./InscriptionCours";
 
-export default function Horaire() {
+export default function Horaire({ user }) {
   const [bassin, setBassin] = useState([]);
   const [selectedBassin, setSelectedBassin] = useState();
   const [selectedSections, setSelectedSections] = useState([]);
@@ -68,8 +70,7 @@ export default function Horaire() {
       selectedTimeTo &&
       selectedActivity &&
       selectedBassin &&
-      selectedDay &&
-      selectedTimeFrom != selectedTimeTo
+      selectedDay
     ) {
       const overlappingItem = schedule.find(
         (item) =>
@@ -100,6 +101,36 @@ export default function Horaire() {
           bassin: selectedBassin,
           longueur: selectedSections,
           day: selectedDay,
+          nom: selectedNiveau.nom,
+        });
+
+        await saveHoraire(newItem).then((data) => {
+          if (data) {
+            toast.success("Successfully added ✓");
+            setSchedule([...schedule, newItem]);
+            setSelectedSections([]);
+            setSelectedTimeFrom("");
+            setSelectedTimeTo("");
+            setselectedActivity("");
+            setSelectedBassin("");
+            setSelectedDay("");
+            setSelectedTeacher("");
+            setSelectedNiveau("");
+          } else {
+            toast.error("Error lors de la sauvegarde");
+          }
+        });
+      } else if (selectedActivity == "bainslibres") {
+        const id = await getBainsLibreId(selectedBassin);
+
+        const newItem = new HoraireGrid({
+          from: selectedTimeFrom,
+          to: selectedTimeTo,
+          activitePiscineId: id,
+          bassin: selectedBassin,
+          longueur: selectedSections,
+          day: selectedDay,
+          nom: "Bains Libres",
         });
 
         await saveHoraire(newItem).then((data) => {
@@ -258,54 +289,57 @@ export default function Horaire() {
 
   return (
     <div className="container">
-      <div className="accordion accordion-flush" id="accordionFlushExample">
-        <div className="accordion-item">
-          <h2 className="accordion-header">
-            <button
-              className="accordion-button collapsed rounded border my-2"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#flush-collapseForm"
-              aria-expanded="false"
-              aria-controls="flush-collapseForm"
+      {user && user.role == "admin" && (
+        <div className="accordion accordion-flush" id="accordionFlushExample">
+          <div className="accordion-item">
+            <h2 className="accordion-header">
+              <button
+                className="accordion-button collapsed rounded border my-2"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseForm"
+                aria-expanded="false"
+                aria-controls="flush-collapseForm"
+              >
+                Ajouter une Activitees
+              </button>
+            </h2>
+            <div
+              id="flush-collapseForm"
+              className="accordion-collapse collapse bg-light"
+              data-bs-parent="#accordionFlushExample"
             >
-              Ajout Activitees
-            </button>
-          </h2>
-          <div
-            id="flush-collapseForm"
-            className="accordion-collapse collapse bg-light"
-            data-bs-parent="#accordionFlushExample"
-          >
-            <div className="accordion-body">
-              <ScheduleForm
-                bassin={bassin}
-                selectedBassin={selectedBassin}
-                selectedSections={selectedSections}
-                selectedTimeFrom={selectedTimeFrom}
-                selectedTimeTo={selectedTimeTo}
-                handleBassinChange={handleBassinChange}
-                handleSectionToggle={handleSectionToggle}
-                handleAddScheduleItem={handleAddScheduleItem}
-                setSelectedTimeFrom={setSelectedTimeFrom}
-                setSelectedTimeTo={setSelectedTimeTo}
-                handleActivityClick={handleActivityClick}
-                activities={activities}
-                selectedActivity={selectedActivity}
-                days={days}
-                handleDays={handleDays}
-                selectedDay={selectedDay}
-                selectedTeacher={selectedTeacher}
-                handleTeacherClick={handleTeacherClick}
-                teachers={teachers}
-                selectedNiveau={selectedNiveau}
-                handleNiveauClick={handleNiveauClick}
-                niveaux={niveaux}
-              />
+              <div className="accordion-body">
+                <ScheduleForm
+                  bassin={bassin}
+                  selectedBassin={selectedBassin}
+                  selectedSections={selectedSections}
+                  selectedTimeFrom={selectedTimeFrom}
+                  selectedTimeTo={selectedTimeTo}
+                  handleBassinChange={handleBassinChange}
+                  handleSectionToggle={handleSectionToggle}
+                  handleAddScheduleItem={handleAddScheduleItem}
+                  setSelectedTimeFrom={setSelectedTimeFrom}
+                  setSelectedTimeTo={setSelectedTimeTo}
+                  handleActivityClick={handleActivityClick}
+                  activities={activities}
+                  selectedActivity={selectedActivity}
+                  days={days}
+                  handleDays={handleDays}
+                  selectedDay={selectedDay}
+                  selectedTeacher={selectedTeacher}
+                  handleTeacherClick={handleTeacherClick}
+                  teachers={teachers}
+                  selectedNiveau={selectedNiveau}
+                  handleNiveauClick={handleNiveauClick}
+                  niveaux={niveaux}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
+
       <div className="my-2">
         <ScheduleGrid
           schedule={schedule}

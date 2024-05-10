@@ -22,6 +22,9 @@ public class HoraireDto {
     @Getter @Setter
     private Long activitePiscineId;
 
+    @Getter@Setter
+    private String nom;
+
     @Getter @Setter
     private Bassin bassin;
 
@@ -42,5 +45,6 @@ public class HoraireDto {
         this.bassin = horaire.getBassin();
         this.longueur = horaire.getLongueur();
         this.day = horaire.getDay();
+        this.nom = horaire.getNom();
     }
 }

@@ -5,6 +5,7 @@ import com.example.myappcore.dto.CoursDto;
 import com.example.myappcore.model.BainsLibre;
 import com.example.myappcore.model.Cours;
 import com.example.myappcore.repository.BainsLibreRepository;
+import com.example.myappcore.utils.Bassin;
 import com.example.myappcore.utils.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,11 +27,13 @@ public class BainsLibreService {
 
     public BainsLibreDto saveBainsLibre(BainsLibreDto bainsLibreDto) {
         if(bainsLibreDto != null){
+            System.out.println(bainsLibreDto);
             BainsLibre bainsLibre = new BainsLibre();
             bainsLibre.setId(bainsLibreDto.getId());
             bainsLibre.setBassin(bainsLibreDto.getBassin());
             bainsLibre.setSauveteurs(null);
             bainsLibre.setType(Type.bainslibres);
+
             BainsLibre savedBainsLibre = bainsLibreRepository.save(bainsLibre);
             return new BainsLibreDto(savedBainsLibre);
         }
@@ -40,5 +43,11 @@ public class BainsLibreService {
     public Optional<BainsLibreDto> getBainsLibreById(Long id) {
         Optional<BainsLibre> bainsLibreOptional = bainsLibreRepository.findById(id);
         return bainsLibreOptional.map(BainsLibreDto::new);
+    }
+
+    public Long getBainsLibresId(Bassin bassin) {
+        Long id = bainsLibreRepository.getBainsLibreIdByBassin(bassin).get();
+        System.out.println(id);
+        return id;
     }
 }

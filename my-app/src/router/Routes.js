@@ -1,8 +1,8 @@
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
-  Redirect,
+  Navigate,
+  Routes,
 } from "react-router-dom";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
@@ -10,23 +10,9 @@ import NotFoundPage from "../pages/NotFoundPage";
 import HomePage from "../pages/HomePage";
 import React, { useState, useEffect } from "react";
 import { isAuthenticated } from "../api/ApiCalls";
+import InscriptionCours from "../pages/InscriptionCours";
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) =>
-      isAuthenticated() ? (
-        <Component {...props} />
-      ) : (
-        <Redirect
-          to={{ pathname: "/login", state: { from: props.location } }}
-        />
-      )
-    }
-  />
-);
-
-export const Routes = () => {
+export const AppRoutes = () => {
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -35,21 +21,19 @@ export const Routes = () => {
 
   return (
     <Router>
-      <Switch>
-        <Route path="/" exact>
-          <Redirect to="/login" />
-        </Route>
-        <Route path="/login" exact>
-          <Login />
-        </Route>
-        <Route path="/register">
-          <Register />
-        </Route>
-        <PrivateRoute path="/home/:userId" component={HomePage} />
-        <Route>
-          <NotFoundPage />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/inscrire/:userId" element={<InscriptionCours />} />
+        <Route path="/register" element={<Register />} />
+        <Route
+          path="/home/:userId"
+          element={
+            isAuthenticated() ? <HomePage /> : <Navigate to="/login" replace />
+          }
+        />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </Router>
   );
 };

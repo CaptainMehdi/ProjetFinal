@@ -30,7 +30,7 @@ export default function HomePage() {
   return (
     <div>
       <Navbar user={user} />
-      <Horaire />
+      <Horaire user={user} />
     </div>
   );
 }

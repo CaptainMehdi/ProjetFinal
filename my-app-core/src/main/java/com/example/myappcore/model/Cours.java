@@ -33,6 +33,8 @@ public class Cours extends ActivitePiscine{
     @ManyToOne
     private Niveau niveau;
 
+    private String nom;
+
     public Cours(Bassin bassin, Type type, int maxEleves, List<User> eleve, User prof, Niveau niveau) {
         super(bassin, type);
         this.maxEleves = maxEleves;

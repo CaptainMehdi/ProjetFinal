@@ -1,9 +1,9 @@
 class HoraireGrid {
-  constructor({ name, from, to, activitePiscineId, bassin, longueur, day }) {
-    this.name = name;
+  constructor({ from, to, activitePiscineId, bassin, longueur, day, nom }) {
     this.from = from;
     this.to = to;
     this.activitePiscineId = activitePiscineId;
+    this.nom = nom;
     this.bassin = bassin;
     this.longueur = longueur;
     this.day = day;

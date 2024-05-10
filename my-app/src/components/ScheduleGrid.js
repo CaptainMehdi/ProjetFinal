@@ -18,6 +18,27 @@ const ScheduleGrid = ({ schedule, bassin, handleNext, handlePrev, day }) => {
   };
 
   const timeIntervals = generateTimeIntervals();
+  const groupItems = (items) => {
+    const groupedItems = [];
+    let currentGroup = [];
+
+    items.forEach((item, idx) => {
+      if (
+        idx === 0 ||
+        item.from !== items[idx - 1].from ||
+        item.to !== items[idx - 1].to
+      ) {
+        // Start a new group
+        currentGroup = [item];
+        groupedItems.push(currentGroup);
+      } else {
+        // Add to the current group
+        currentGroup.push(item);
+      }
+    });
+
+    return groupedItems;
+  };
 
   return (
     <>
@@ -80,8 +101,11 @@ const ScheduleGrid = ({ schedule, bassin, handleNext, handlePrev, day }) => {
                         return (
                           <div key={sectionIndex} className="col p-0">
                             {matchingScheduleItems.map((item, idx) => (
-                              <div key={idx} className="schedule-item">
-                                {item.day}
+                              <div
+                                key={idx}
+                                className="schedule-item text-center"
+                              >
+                                {item.nom}
                               </div>
                             ))}
                           </div>
@@ -115,7 +139,7 @@ const ScheduleGrid = ({ schedule, bassin, handleNext, handlePrev, day }) => {
                           <div key={sectionIndex} className="col p-0">
                             {matchingScheduleItems.map((item, idx) => (
                               <div key={idx} className="schedule-item">
-                                {item.day}
+                                {item.nom}
                               </div>
                             ))}
                           </div>

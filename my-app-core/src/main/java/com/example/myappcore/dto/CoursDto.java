@@ -5,12 +5,15 @@ import com.example.myappcore.model.User;
 import com.example.myappcore.utils.Bassin;
 import com.example.myappcore.utils.Type;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
+
 public class CoursDto extends ActivitePiscineDto {
 
     private Long id;
@@ -36,4 +39,8 @@ public class CoursDto extends ActivitePiscineDto {
         this.prof = prof;
         this.niveau = niveau;
     }
+
+    public CoursDto() {
+    }
+
 }

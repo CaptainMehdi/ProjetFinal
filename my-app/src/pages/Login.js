@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { login, setAuthenticated } from "../api/ApiCalls";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -15,7 +15,7 @@ export default function Login() {
       const response = await login({ email, password });
       if (response) {
         setAuthenticated(true);
-        history.push(`/home/${response.id}`);
+        navigate(`/home/${response.id}`);
         window.location.reload();
       } else {
         toast.error("Bad credential");

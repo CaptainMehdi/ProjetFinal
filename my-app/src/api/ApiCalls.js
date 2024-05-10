@@ -214,3 +214,21 @@ export const saveCours = async (cours) => {
     throw error;
   }
 };
+
+export const getBainsLibreId = async (bassin) => {
+  try {
+    const response = await fetch(
+      "http://localhost:8080/api/activity/get/" + bassin
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to Get Niveau");
+    }
+    const data = await response.json();
+    console.log("Niveau received:", data);
+    return data;
+  } catch (error) {
+    console.error("Error:", error.message);
+    throw error;
+  }
+};
